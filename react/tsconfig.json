@@ -1,0 +1,16 @@
+{
+  "extends": "@reactunity/scripts",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "types": [
+      "@reactunity/scripts/main",
+      "@reactunity/scripts/ugui"
+    ]
+  },
+  "files": [
+    "./src/index.tsx"
+  ],
+  "include": [
+    "./src"
+  ]
+}
