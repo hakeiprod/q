@@ -1,10 +1,14 @@
-import { render } from '@reactunity/renderer';
-import './index.scss';
+import { render } from "@reactunity/renderer";
+import "./index.scss";
+import { AppRoutes } from "./routes";
+import { AppProviders } from "./providers/app";
 
 function App() {
-  return <scroll>
-    <text>{`Go to <color=red>src/index.tsx</color> to edit this file`}</text>
-  </scroll>;
+  return (
+    <AppProviders>
+      <AppRoutes />
+    </AppProviders>
+  );
 }
 
 render(<App />);
