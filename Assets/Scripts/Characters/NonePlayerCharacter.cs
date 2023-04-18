@@ -1,0 +1,3 @@
+class NonePlayerCharacter : Character
+{
+}
