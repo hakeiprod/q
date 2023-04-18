@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
-import { MemoryRouter } from "react-router";
+import { MemoryRouter as Router } from "react-router";
 
-export const AppProviders = ({ children }: PropsWithChildren) => {
-  return <MemoryRouter>{children}</MemoryRouter>;
-};
+export const AppProviders = ({ children }: PropsWithChildren) => (
+  <Router>{children}</Router>
+);

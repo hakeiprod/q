@@ -3,12 +3,10 @@ import "./index.scss";
 import { AppRoutes } from "./routes";
 import { AppProviders } from "./providers/app";
 
-function App() {
-  return (
-    <AppProviders>
-      <AppRoutes />
-    </AppProviders>
-  );
-}
+const App = () => (
+  <AppProviders>
+    <AppRoutes />
+  </AppProviders>
+);
 
 render(<App />);
