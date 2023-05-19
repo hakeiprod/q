@@ -1239,9 +1239,9 @@ MonoBehaviour:
   characterController: {fileID: 4416926081852918491}
   animator: {fileID: 6982812146204527121}
   speed: 0.01
-  jumpingHeight: 3
-  move: {x: 0, y: 0}
-  jump: 0
+  jumpingHeight: 2
+  jumpingSpeed: 3
+  gravity: 20
 --- !u!1 &4523139366846529165
 GameObject:
   m_ObjectHideFlags: 0

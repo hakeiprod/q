@@ -18,30 +18,30 @@ public abstract class AbstractCharacterController : MonoBehaviour
 		{ "injure", 6 },
 		{ "die", 7 },
 	};
-	// status
 	public float speed;
 	public float jumpingHeight;
-	// actions
-	public Vector2 move;
-	public bool jump;
+	public float jumpingSpeed;
+	public float gravity;
+	[System.NonSerialized] public Vector2 move;
+	[System.NonSerialized] public bool jump;
 	protected virtual void Awake() { }
 	protected virtual void Start() { }
-	public class IdleState : ImtStateMachine<AbstractCharacterController>.State
+	public class IdleState<T> : ImtStateMachine<T>.State
 	{
 		protected override void Update()
 		{
 
 		}
 	}
-	public class WalkState : ImtStateMachine<AbstractCharacterController>.State
+	public class WalkState<T> : ImtStateMachine<T>.State
 	{
 		protected override void Update() { }
 	}
-	public class JumpState : ImtStateMachine<AbstractCharacterController>.State
+	public class JumpState<T> : ImtStateMachine<T>.State
 	{
 		protected override void Update() { }
 	}
-	public class FallState : ImtStateMachine<AbstractCharacterController>.State
+	public class FallState<T> : ImtStateMachine<T>.State
 	{
 		protected override void Update() { }
 	}

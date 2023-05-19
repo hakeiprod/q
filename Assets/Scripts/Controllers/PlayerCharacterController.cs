@@ -3,12 +3,12 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 public class PlayerCharacterController : AbstractCharacterController
 {
-	public ImtStateMachine<AbstractCharacterController> stateMachine;
+	public ImtStateMachine<PlayerCharacterController> stateMachine;
 
 	protected override void Awake()
 	{
 		base.Awake();
-		stateMachine = new ImtStateMachine<AbstractCharacterController>(this);
+		stateMachine = new ImtStateMachine<PlayerCharacterController>(this);
 
 		stateMachine.SetStartState<PlayerIdleState>();
 		stateMachine.AddTransition<PlayerIdleState, PlayerWalkState>((int)State["walk"]);
@@ -16,6 +16,7 @@ public class PlayerCharacterController : AbstractCharacterController
 		stateMachine.AddTransition<PlayerIdleState, PlayerFallState>((int)State["fall"]);
 
 		stateMachine.AddTransition<PlayerWalkState, PlayerIdleState>((int)State["idle"]);
+		stateMachine.AddTransition<PlayerWalkState, PlayerJumpState>((int)State["jump"]);
 
 		stateMachine.AddTransition<PlayerJumpState, PlayerFallState>((int)State["fall"]);
 
@@ -38,52 +39,41 @@ public class PlayerCharacterController : AbstractCharacterController
 	{
 		jump = context.performed;
 	}
-	public class PlayerIdleState : IdleState
+	public class PlayerIdleState : IdleState<PlayerCharacterController>
 	{
 		protected override void Update()
 		{
-			var playerContext = (PlayerCharacterController)Context;
-			if (!Context.characterController.isGrounded)
-				playerContext.stateMachine.SendEvent((int)Context.State["fall"]);
-			if (!playerContext.CheckIdle())
-				playerContext.stateMachine.SendEvent((int)Context.State["walk"]);
-			if (Context.jump && Context.characterController.isGrounded)
-				playerContext.stateMachine.SendEvent((int)Context.State["jump"]);
+			if (!Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["fall"]);
+			if (!Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["walk"]);
+			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
 		}
 	}
-	public class PlayerWalkState : WalkState
+	public class PlayerWalkState : WalkState<PlayerCharacterController>
 	{
 		protected override void Update()
 		{
-			var playerContext = (PlayerCharacterController)Context;
-			if (playerContext.CheckIdle())
-				playerContext.stateMachine.SendEvent((int)Context.State["idle"]);
-			Context.characterController.Move(new Vector3(Context.move.x * Context.speed, 0, Context.move.y * Context.speed));
+			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
+			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
+			Context.characterController.Move(new Vector3(Context.move.x * Context.speed, Context.CalcGravity(), Context.move.y * Context.speed));
 		}
 	}
-	public class PlayerJumpState : JumpState
+	public class PlayerJumpState : JumpState<PlayerCharacterController>
 	{
 		protected override void Update()
 		{
-			Context.characterController.Move(new Vector3(0, 1 * Time.deltaTime, 0));
-			if (Context.transform.position.y > Context.jumpingHeight)
-			{
-				var playerContext = (PlayerCharacterController)Context;
-				playerContext.stateMachine.SendEvent((int)Context.State["fall"]);
-			}
+			if (Context.transform.position.y > Context.jumpingHeight) Context.stateMachine.SendEvent((int)Context.State["fall"]);
+			Context.characterController.Move(new Vector3(0, Context.jumpingSpeed * Time.deltaTime, 0));
 		}
 	}
-	public class PlayerFallState : FallState
+	public class PlayerFallState : FallState<PlayerCharacterController>
 	{
 		protected override void Update()
 		{
-			Context.characterController.Move(new Vector3(0, -1 * Time.deltaTime, 0));
-			if (Context.characterController.isGrounded)
-			{
-				var playerContext = (PlayerCharacterController)Context;
-				playerContext.stateMachine.SendEvent((int)Context.State["idle"]);
-			}
+			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["idle"]);
+			Context.characterController.Move(new Vector3(0, Context.CalcGravity(), 0));
 		}
 	}
-	bool CheckIdle() { return move.x == 0 && move.y == 0; }
+	bool IsIdling() { return move.x == 0 && move.y == 0; }
+	float CalcGravity() { return -(gravity * Time.deltaTime); }
+	bool IsJampable() { return jump && characterController.isGrounded; }
 }
