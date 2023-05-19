@@ -1,10 +1,8 @@
 using IceMilkTea.Core;
 using UnityEngine.InputSystem;
 using UnityEngine;
-public class PlayerCharacterController : AbstractCharacterController
+public class PlayerCharacterController : AbstractCharacterController<PlayerCharacterController>
 {
-	public ImtStateMachine<PlayerCharacterController> stateMachine;
-
 	protected override void Awake()
 	{
 		base.Awake();
@@ -39,8 +37,12 @@ public class PlayerCharacterController : AbstractCharacterController
 	{
 		jump = context.performed;
 	}
-	public class PlayerIdleState : IdleState<PlayerCharacterController>
+	public class PlayerIdleState : IdleState
 	{
+		protected override void Enter()
+		{
+			Context.animator.SetTrigger("Idle");
+		}
 		protected override void Update()
 		{
 			if (!Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["fall"]);
@@ -48,8 +50,12 @@ public class PlayerCharacterController : AbstractCharacterController
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
 		}
 	}
-	public class PlayerWalkState : WalkState<PlayerCharacterController>
+	public class PlayerWalkState : WalkState
 	{
+		protected override void Enter()
+		{
+			Context.animator.SetTrigger("Walk");
+		}
 		protected override void Update()
 		{
 			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
@@ -57,20 +63,32 @@ public class PlayerCharacterController : AbstractCharacterController
 			Context.characterController.Move(new Vector3(Context.move.x * Context.speed, Context.CalcGravity(), Context.move.y * Context.speed));
 		}
 	}
-	public class PlayerJumpState : JumpState<PlayerCharacterController>
+	public class PlayerJumpState : JumpState
 	{
+		protected override void Enter()
+		{
+			Context.animator.SetTrigger("Jump");
+		}
 		protected override void Update()
 		{
 			if (Context.transform.position.y > Context.jumpingHeight) Context.stateMachine.SendEvent((int)Context.State["fall"]);
 			Context.characterController.Move(new Vector3(0, Context.jumpingSpeed * Time.deltaTime, 0));
 		}
 	}
-	public class PlayerFallState : FallState<PlayerCharacterController>
+	public class PlayerFallState : FallState
 	{
+		protected override void Enter()
+		{
+			Context.animator.SetTrigger("Fall");
+		}
 		protected override void Update()
 		{
 			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["idle"]);
 			Context.characterController.Move(new Vector3(0, Context.CalcGravity(), 0));
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetTrigger("Idle");
 		}
 	}
 	bool IsIdling() { return move.x == 0 && move.y == 0; }

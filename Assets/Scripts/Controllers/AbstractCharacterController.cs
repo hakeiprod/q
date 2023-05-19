@@ -3,9 +3,10 @@ using IceMilkTea.Core;
 using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
-public abstract class AbstractCharacterController : MonoBehaviour
+public abstract class AbstractCharacterController<T> : MonoBehaviour
 {
 	public CharacterController characterController;
+	public ImtStateMachine<T> stateMachine;
 	public Animator animator;
 	public Dictionary<string, int> State = new Dictionary<string, int>()
 	{
@@ -26,22 +27,26 @@ public abstract class AbstractCharacterController : MonoBehaviour
 	[System.NonSerialized] public bool jump;
 	protected virtual void Awake() { }
 	protected virtual void Start() { }
-	public class IdleState<T> : ImtStateMachine<T>.State
+	public class IdleState : ImtStateMachine<T>.State
 	{
-		protected override void Update()
-		{
-
-		}
+		protected override void Enter() { }
+		protected override void Update() { }
 	}
-	public class WalkState<T> : ImtStateMachine<T>.State
+	public class WalkState : ImtStateMachine<T>.State
+	{
+		protected override void Enter() { }
+		protected override void Update() { }
+	}
+	public class RunState : ImtStateMachine<T>.State
+	{
+		protected override void Enter() { }
+		protected override void Update() { }
+	}
+	public class JumpState : ImtStateMachine<T>.State
 	{
 		protected override void Update() { }
 	}
-	public class JumpState<T> : ImtStateMachine<T>.State
-	{
-		protected override void Update() { }
-	}
-	public class FallState<T> : ImtStateMachine<T>.State
+	public class FallState : ImtStateMachine<T>.State
 	{
 		protected override void Update() { }
 	}
