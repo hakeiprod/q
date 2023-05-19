@@ -1,8 +1,6 @@
 using UnityEngine;
-public class Character : MonoBehaviour
+public abstract class AbstractCharacter : MonoBehaviour
 {
 	public int health;
 	public int stamina;
-
-
 }
