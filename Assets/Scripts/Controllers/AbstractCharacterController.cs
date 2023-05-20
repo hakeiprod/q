@@ -6,8 +6,8 @@ using UnityEngine;
 public abstract class AbstractCharacterController<T> : MonoBehaviour
 {
 	public CharacterController characterController;
-	public ImtStateMachine<T> stateMachine;
 	public Animator animator;
+	public ImtStateMachine<T> stateMachine;
 	public Dictionary<string, int> State = new Dictionary<string, int>()
 	{
 		{ "idle", 0 },
@@ -16,8 +16,9 @@ public abstract class AbstractCharacterController<T> : MonoBehaviour
 		{ "crouch", 3 },
 		{ "jump", 4 },
 		{ "fall", 5 },
-		{ "injure", 6 },
-		{ "die", 7 },
+		{ "land", 6 },
+		{ "injure", 7 },
+		{ "die", 8 },
 	};
 	public float speed;
 	public float jumpingHeight;
@@ -47,6 +48,10 @@ public abstract class AbstractCharacterController<T> : MonoBehaviour
 		protected override void Update() { }
 	}
 	public class FallState : ImtStateMachine<T>.State
+	{
+		protected override void Update() { }
+	}
+	public class LandState : ImtStateMachine<T>.State
 	{
 		protected override void Update() { }
 	}

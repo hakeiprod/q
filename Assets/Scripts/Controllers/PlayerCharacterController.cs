@@ -18,7 +18,10 @@ public class PlayerCharacterController : AbstractCharacterController<PlayerChara
 
 		stateMachine.AddTransition<PlayerJumpState, PlayerFallState>((int)State["fall"]);
 
-		stateMachine.AddTransition<PlayerFallState, PlayerIdleState>((int)State["idle"]);
+		stateMachine.AddTransition<PlayerFallState, PlayerLandState>((int)State["land"]);
+
+		stateMachine.AddTransition<PlayerLandState, PlayerIdleState>((int)State["idle"]);
+		stateMachine.AddTransition<PlayerLandState, PlayerWalkState>((int)State["walk"]);
 	}
 	protected override void Start()
 	{
@@ -60,6 +63,13 @@ public class PlayerCharacterController : AbstractCharacterController<PlayerChara
 		{
 			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
+			var forwardDirection = Context.characterController.velocity.normalized;
+			if (!Context.IsIdling())
+			{
+				float targetAngle = Mathf.Atan2(forwardDirection.x, forwardDirection.z) * Mathf.Rad2Deg;
+				Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
+				Context.transform.rotation = Quaternion.Lerp(Context.transform.rotation, targetRotation, 10 * Time.deltaTime);
+			}
 			Context.characterController.Move(new Vector3(Context.move.x * Context.speed, Context.CalcGravity(), Context.move.y * Context.speed));
 		}
 	}
@@ -83,15 +93,23 @@ public class PlayerCharacterController : AbstractCharacterController<PlayerChara
 		}
 		protected override void Update()
 		{
-			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["idle"]);
+			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["land"]);
 			Context.characterController.Move(new Vector3(0, Context.CalcGravity(), 0));
 		}
-		protected override void Exit()
+	}
+	public class PlayerLandState : LandState
+	{
+		protected override void Enter()
 		{
-			Context.animator.SetTrigger("Idle");
+			Context.animator.SetTrigger("Land");
+		}
+		protected override void Update()
+		{
+			// TODO: Landアニメーションが終了した場合、Idleに遷移する
+			if (!Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["walk"]);
 		}
 	}
-	bool IsIdling() { return move.x == 0 && move.y == 0; }
-	float CalcGravity() { return -(gravity * Time.deltaTime); }
+	bool IsIdling() { return move == Vector2.zero; }
 	bool IsJampable() { return jump && characterController.isGrounded; }
+	float CalcGravity() { return -(gravity * Time.deltaTime); }
 }
