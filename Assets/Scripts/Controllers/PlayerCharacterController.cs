@@ -1,10 +1,10 @@
 using IceMilkTea.Core;
 using UnityEngine.InputSystem;
 using UnityEngine;
-using UniRx;
 
-public class PlayerCharacterController : AbstractCharacterController<PlayerCharacterController>
+public class PlayerCharacterController : AbstractCharacterController
 {
+	public ImtStateMachine<PlayerCharacterController> stateMachine;
 	protected override void Awake()
 	{
 		base.Awake();
@@ -50,109 +50,61 @@ public class PlayerCharacterController : AbstractCharacterController<PlayerChara
 	{
 		run = context.performed;
 	}
-	public class PlayerIdleState : IdleState
+	public class PlayerIdleState : IdleState<PlayerCharacterController>
 	{
-		protected override void Enter()
-		{
-			Context.animator.SetBool("Idle", true);
-		}
 		protected override void Update()
 		{
 			if (!Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["fall"]);
 			if (!Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["walk"]);
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
 		}
-		protected override void Exit()
-		{
-			Context.animator.SetBool("Idle", false);
-		}
 	}
-	public class PlayerWalkState : WalkState
+	public class PlayerWalkState : WalkState<PlayerCharacterController>
 	{
-		protected override void Enter()
-		{
-			Context.animator.SetBool("Walk", true);
-		}
 		protected override void Update()
 		{
-			if (Context.animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Walk_N") return;
+			if (Context.GetCurrentAnimatorClip() != "Walk_N") return;
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
-			if (!Context.IsIdling() && Context.run) Context.stateMachine.SendEvent((int)Context.State["run"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
-			else Context.transform.rotation = Context.CalcRotation();
+			if (Context.run) Context.stateMachine.SendEvent((int)Context.State["run"]);
+			Context.transform.rotation = Context.CalcRotation();
 			Context.characterController.Move(new Vector3(Context.move.x * Context.speed, Context.CalcGravity(), Context.move.y * Context.speed));
 		}
-		protected override void Exit()
-		{
-			Context.animator.SetBool("Walk", false);
-		}
 	}
-	public class PlayerRunState : RunState
+	public class PlayerRunState : RunState<PlayerCharacterController>
 	{
-		protected override void Enter()
-		{
-			Context.animator.SetBool("Run", true);
-		}
 		protected override void Update()
 		{
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
+			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
 			if (!Context.run) Context.stateMachine.SendEvent((int)Context.State["walk"]);
-			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
-			else Context.transform.rotation = Context.CalcRotation();
+			Context.transform.rotation = Context.CalcRotation();
 			Context.characterController.Move(new Vector3(Context.move.x * Context.speed, Context.CalcGravity(), Context.move.y * Context.speed));
 		}
-		protected override void Exit()
-		{
-			Context.animator.SetBool("Run", false);
-		}
 	}
-	public class PlayerJumpState : JumpState
+	public class PlayerJumpState : JumpState<PlayerCharacterController>
 	{
-		protected override void Enter()
-		{
-			Context.animator.SetBool("Jump", true);
-		}
 		protected override void Update()
 		{
 			if (Context.transform.position.y > Context.jumpingHeight) Context.stateMachine.SendEvent((int)Context.State["fall"]);
 			Context.characterController.Move(new Vector3(0, Context.jumpingSpeed * Time.deltaTime, 0));
 		}
-		protected override void Exit()
-		{
-			Context.animator.SetBool("Jump", false);
-		}
 	}
-	public class PlayerFallState : FallState
+	public class PlayerFallState : FallState<PlayerCharacterController>
 	{
-		protected override void Enter()
-		{
-			Context.animator.SetBool("Fall", true);
-		}
 		protected override void Update()
 		{
-			if (Context.animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "InAir") return;
+			if (Context.GetCurrentAnimatorClip() != "InAir") return;
 			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["land"]);
 			Context.characterController.Move(new Vector3(0, Context.CalcGravity(), 0));
 		}
-		protected override void Exit()
-		{
-			Context.animator.SetBool("Fall", false);
-		}
 	}
-	public class PlayerLandState : LandState
+	public class PlayerLandState : LandState<PlayerCharacterController>
 	{
-		protected override void Enter()
-		{
-			Context.animator.SetBool("Land", true);
-		}
 		protected override void Update()
 		{
-			if (Context.animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "JumpLand") return;
+			if (Context.GetCurrentAnimatorClip() != "JumpLand") return;
 			if (Context.animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1) Context.stateMachine.SendEvent((int)Context.State["idle"]);
-		}
-		protected override void Exit()
-		{
-			Context.animator.SetBool("Land", false);
 		}
 	}
 	bool IsIdling() { return move == Vector2.zero; }

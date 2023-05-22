@@ -7,12 +7,11 @@ using System;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
-public abstract class AbstractCharacterController<T> : MonoBehaviour
+public abstract class AbstractCharacterController : MonoBehaviour
 {
 	public CharacterController characterController;
 	public Animator animator;
 	[System.NonSerialized] public ObservableStateMachineTrigger observableStateMachineTrigger;
-	public ImtStateMachine<T> stateMachine;
 	public Dictionary<string, int> State = new Dictionary<string, int>()
 	{
 		{ "idle", 0 },
@@ -39,32 +38,76 @@ public abstract class AbstractCharacterController<T> : MonoBehaviour
 	protected virtual void Start()
 	{
 	}
-	public class IdleState : ImtStateMachine<T>.State
+	public class IdleState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController
 	{
-		protected override void Enter() { }
-		protected override void Update() { }
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Idle", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Idle", false);
+		}
 	}
-	public class WalkState : ImtStateMachine<T>.State
+	public class WalkState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController
 	{
-		protected override void Enter() { }
-		protected override void Update() { }
+		protected override void Enter()
+		{
+
+			Context.animator.SetBool("Walk", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Walk", false);
+		}
 	}
-	public class RunState : ImtStateMachine<T>.State
+	public class RunState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController
 	{
-		protected override void Enter() { }
-		protected override void Update() { }
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Run", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Run", false);
+		}
 	}
-	public class JumpState : ImtStateMachine<T>.State
+	public class JumpState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController
 	{
-		protected override void Update() { }
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Jump", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Jump", false);
+		}
 	}
-	public class FallState : ImtStateMachine<T>.State
+	public class FallState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController
 	{
-		protected override void Update() { }
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Fall", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Fall", false);
+		}
 	}
-	public class LandState : ImtStateMachine<T>.State
+	public class LandState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController
 	{
-		protected override void Update() { }
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Land", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Land", false);
+		}
+	}
+	public string GetCurrentAnimatorClip()
+	{
+		return animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
 	}
 	public void OnStateExitAsObservableByName(string stateInfoName, Action<UniRx.Triggers.ObservableStateMachineTrigger.OnStateInfo> Subscribe)
 	{
