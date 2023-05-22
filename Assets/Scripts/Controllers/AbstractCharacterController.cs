@@ -31,6 +31,7 @@ public abstract class AbstractCharacterController<T> : MonoBehaviour
 	public float gravity;
 	[System.NonSerialized] public Vector2 move;
 	[System.NonSerialized] public bool jump;
+	[System.NonSerialized] public bool run;
 	protected virtual void Awake()
 	{
 		observableStateMachineTrigger = animator.GetBehaviour<ObservableStateMachineTrigger>();

@@ -17,6 +17,9 @@ public class PlayerCharacterController : AbstractCharacterController<PlayerChara
 
 		stateMachine.AddTransition<PlayerWalkState, PlayerIdleState>((int)State["idle"]);
 		stateMachine.AddTransition<PlayerWalkState, PlayerJumpState>((int)State["jump"]);
+		stateMachine.AddTransition<PlayerWalkState, PlayerRunState>((int)State["run"]);
+
+		stateMachine.AddTransition<PlayerRunState, PlayerWalkState>((int)State["walk"]);
 
 		stateMachine.AddTransition<PlayerJumpState, PlayerFallState>((int)State["fall"]);
 
@@ -43,6 +46,10 @@ public class PlayerCharacterController : AbstractCharacterController<PlayerChara
 	{
 		jump = context.performed;
 	}
+	public void OnRun(InputAction.CallbackContext context)
+	{
+		run = context.performed;
+	}
 	public class PlayerIdleState : IdleState
 	{
 		protected override void Enter()
@@ -68,7 +75,9 @@ public class PlayerCharacterController : AbstractCharacterController<PlayerChara
 		}
 		protected override void Update()
 		{
+			if (Context.animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Walk_N") return;
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
+			if (!Context.IsIdling() && Context.run) Context.stateMachine.SendEvent((int)Context.State["run"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
 			else Context.transform.rotation = Context.CalcRotation();
 			Context.characterController.Move(new Vector3(Context.move.x * Context.speed, Context.CalcGravity(), Context.move.y * Context.speed));
@@ -76,6 +85,25 @@ public class PlayerCharacterController : AbstractCharacterController<PlayerChara
 		protected override void Exit()
 		{
 			Context.animator.SetBool("Walk", false);
+		}
+	}
+	public class PlayerRunState : RunState
+	{
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Run", true);
+		}
+		protected override void Update()
+		{
+			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
+			if (!Context.run) Context.stateMachine.SendEvent((int)Context.State["walk"]);
+			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
+			else Context.transform.rotation = Context.CalcRotation();
+			Context.characterController.Move(new Vector3(Context.move.x * Context.speed, Context.CalcGravity(), Context.move.y * Context.speed));
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Run", false);
 		}
 	}
 	public class PlayerJumpState : JumpState
