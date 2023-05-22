@@ -1240,6 +1240,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   stamina: 0
+  walk:
+    speed: 0.01
+  run:
+    speed: 0.03
+  jump:
+    speed: 0.01
+    height: 2
+  fall:
+    speed: 0.01
 --- !u!114 &4688010174241163299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1258,6 +1267,7 @@ MonoBehaviour:
   jumpingHeight: 2
   jumpingSpeed: 10
   gravity: 7
+  playerCharacter: {fileID: -7209065362731425687}
 --- !u!1 &4523139366846529165
 GameObject:
   m_ObjectHideFlags: 0

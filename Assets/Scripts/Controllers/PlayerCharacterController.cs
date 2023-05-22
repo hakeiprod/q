@@ -1,9 +1,16 @@
 using IceMilkTea.Core;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using System.Collections.Generic;
 
+[RequireComponent(typeof(PlayerCharacter))]
 public class PlayerCharacterController : AbstractCharacterController
 {
+	public PlayerCharacter playerCharacter;
+	public Dictionary<string, int> walk = new Dictionary<string, int>()
+	{
+		{ "speed", 0 },
+	};
 	public ImtStateMachine<PlayerCharacterController> stateMachine;
 	protected override void Awake()
 	{
@@ -20,6 +27,7 @@ public class PlayerCharacterController : AbstractCharacterController
 		stateMachine.AddTransition<PlayerWalkState, PlayerRunState>((int)State["run"]);
 
 		stateMachine.AddTransition<PlayerRunState, PlayerWalkState>((int)State["walk"]);
+		stateMachine.AddTransition<PlayerRunState, PlayerJumpState>((int)State["jump"]);
 
 		stateMachine.AddTransition<PlayerJumpState, PlayerFallState>((int)State["fall"]);
 
@@ -36,7 +44,7 @@ public class PlayerCharacterController : AbstractCharacterController
 	void Update()
 	{
 		stateMachine.Update();
-		Debug.Log(stateMachine.CurrentStateName + " : " + animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
+		Debug.Log(stateMachine.CurrentStateName);
 	}
 	public void OnMove(InputAction.CallbackContext context)
 	{
@@ -63,12 +71,11 @@ public class PlayerCharacterController : AbstractCharacterController
 	{
 		protected override void Update()
 		{
+			Context.Move(Context.playerCharacter.walk.speed, Context.CalcGravity());
 			if (Context.GetCurrentAnimatorClip() != "Walk_N") return;
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
 			if (Context.run) Context.stateMachine.SendEvent((int)Context.State["run"]);
-			Context.transform.rotation = Context.CalcRotation();
-			Context.characterController.Move(new Vector3(Context.move.x * Context.speed, Context.CalcGravity(), Context.move.y * Context.speed));
 		}
 	}
 	public class PlayerRunState : RunState<PlayerCharacterController>
@@ -78,25 +85,24 @@ public class PlayerCharacterController : AbstractCharacterController
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
 			if (!Context.run) Context.stateMachine.SendEvent((int)Context.State["walk"]);
-			Context.transform.rotation = Context.CalcRotation();
-			Context.characterController.Move(new Vector3(Context.move.x * Context.speed, Context.CalcGravity(), Context.move.y * Context.speed));
+			Context.Move(Context.playerCharacter.run.speed, Context.CalcGravity());
 		}
 	}
 	public class PlayerJumpState : JumpState<PlayerCharacterController>
 	{
 		protected override void Update()
 		{
-			if (Context.transform.position.y > Context.jumpingHeight) Context.stateMachine.SendEvent((int)Context.State["fall"]);
-			Context.characterController.Move(new Vector3(0, Context.jumpingSpeed * Time.deltaTime, 0));
+			if (Context.transform.position.y > Context.playerCharacter.jump.height) Context.stateMachine.SendEvent((int)Context.State["fall"]);
+			Context.Move(Context.speed, Context.jumpingSpeed * Time.deltaTime);
 		}
 	}
 	public class PlayerFallState : FallState<PlayerCharacterController>
 	{
 		protected override void Update()
 		{
+			Context.Move(Context.playerCharacter.jump.speed, Context.CalcGravity());
 			if (Context.GetCurrentAnimatorClip() != "InAir") return;
 			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["land"]);
-			Context.characterController.Move(new Vector3(0, Context.CalcGravity(), 0));
 		}
 	}
 	public class PlayerLandState : LandState<PlayerCharacterController>
@@ -116,5 +122,10 @@ public class PlayerCharacterController : AbstractCharacterController
 		float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
 		Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
 		return Quaternion.Lerp(transform.rotation, targetRotation, 10 * Time.deltaTime);
+	}
+	void Move(float moveSpeed, float y)
+	{
+		transform.rotation = CalcRotation();
+		characterController.Move(new Vector3(move.x * moveSpeed, y, move.y * moveSpeed));
 	}
 }
