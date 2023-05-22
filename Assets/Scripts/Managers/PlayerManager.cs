@@ -1,23 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
+[RequireComponent(typeof(PlayerController))]
 public class PlayerManager : MonoBehaviour
 {
+	public PlayerController playerController;
 	public List<PlayerCharacter> players = new List<PlayerCharacter>();
-	List<GameObject> playerGameObjects = new List<GameObject>();
+	List<PlayerCharacter> playerInstances = new List<PlayerCharacter>();
+	[System.NonSerialized] public int activePlayerIndex = 0;
 	void Start()
 	{
 		InstantiatePlayers();
-		ChangeActivePlayer(0);
+		ChangeActivePlayer(activePlayerIndex);
 	}
 	void InstantiatePlayers()
 	{
-		players.ForEach(p => playerGameObjects.Add(Instantiate(p.gameObject, this.transform)));
+		players.ForEach(p => playerInstances.Add(Instantiate(p, this.transform)));
 	}
 	void ChangeActivePlayer(int index)
 	{
-		playerGameObjects.ForEach(p => p.SetActive(false));
-		playerGameObjects[index].SetActive(true);
+		playerInstances.ForEach(p => p.gameObject.SetActive(false));
+		playerInstances[index].gameObject.SetActive(true);
+	}
+	public PlayerCharacter GetActivePlayerInstance()
+	{
+		return playerInstances[activePlayerIndex];
 	}
 }

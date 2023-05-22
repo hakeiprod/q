@@ -1,16 +1,10 @@
 using IceMilkTea.Core;
-using UnityEngine.InputSystem;
 using UnityEngine;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(PlayerCharacter))]
 public class PlayerCharacterController : AbstractCharacterController
 {
 	public PlayerCharacter playerCharacter;
-	public Dictionary<string, int> walk = new Dictionary<string, int>()
-	{
-		{ "speed", 0 },
-	};
 	public ImtStateMachine<PlayerCharacterController> stateMachine;
 	protected override void Awake()
 	{
@@ -45,18 +39,6 @@ public class PlayerCharacterController : AbstractCharacterController
 	{
 		stateMachine.Update();
 		Debug.Log(stateMachine.CurrentStateName);
-	}
-	public void OnMove(InputAction.CallbackContext context)
-	{
-		move = context.ReadValue<Vector2>();
-	}
-	public void OnJump(InputAction.CallbackContext context)
-	{
-		jump = context.performed;
-	}
-	public void OnRun(InputAction.CallbackContext context)
-	{
-		run = context.performed;
 	}
 	public class PlayerIdleState : IdleState<PlayerCharacterController>
 	{
@@ -93,14 +75,14 @@ public class PlayerCharacterController : AbstractCharacterController
 		protected override void Update()
 		{
 			if (Context.transform.position.y > Context.playerCharacter.jump.height) Context.stateMachine.SendEvent((int)Context.State["fall"]);
-			Context.Move(Context.speed, Context.jumpingSpeed * Time.deltaTime);
+			Context.Move(Context.playerCharacter.walk.speed, Context.playerCharacter.jump.speed * Time.deltaTime);
 		}
 	}
 	public class PlayerFallState : FallState<PlayerCharacterController>
 	{
 		protected override void Update()
 		{
-			Context.Move(Context.playerCharacter.jump.speed, Context.CalcGravity());
+			Context.Move(Context.playerCharacter.walk.speed, Context.CalcGravity());
 			if (Context.GetCurrentAnimatorClip() != "InAir") return;
 			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["land"]);
 		}
@@ -115,7 +97,7 @@ public class PlayerCharacterController : AbstractCharacterController
 	}
 	bool IsIdling() { return move == Vector2.zero; }
 	bool IsJampable() { return jump && characterController.isGrounded; }
-	float CalcGravity() { return -(gravity * Time.deltaTime); }
+	float CalcGravity() { return -(playerCharacter.fall.speed * Time.deltaTime); }
 	Quaternion CalcRotation()
 	{
 		var inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;

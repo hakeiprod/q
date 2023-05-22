@@ -24,10 +24,6 @@ public abstract class AbstractCharacterController : MonoBehaviour
 		{ "injure", 7 },
 		{ "die", 8 },
 	};
-	public float speed;
-	public float jumpingHeight;
-	public float jumpingSpeed;
-	public float gravity;
 	[System.NonSerialized] public Vector2 move;
 	[System.NonSerialized] public bool jump;
 	[System.NonSerialized] public bool run;
