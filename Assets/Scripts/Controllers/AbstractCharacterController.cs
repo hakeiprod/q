@@ -1,12 +1,17 @@
 using System.Collections.Generic;
 using IceMilkTea.Core;
+using UniRx.Triggers;
 using UnityEngine;
+using UniRx;
+using System;
+
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
 public abstract class AbstractCharacterController<T> : MonoBehaviour
 {
 	public CharacterController characterController;
 	public Animator animator;
+	[System.NonSerialized] public ObservableStateMachineTrigger observableStateMachineTrigger;
 	public ImtStateMachine<T> stateMachine;
 	public Dictionary<string, int> State = new Dictionary<string, int>()
 	{
@@ -26,8 +31,13 @@ public abstract class AbstractCharacterController<T> : MonoBehaviour
 	public float gravity;
 	[System.NonSerialized] public Vector2 move;
 	[System.NonSerialized] public bool jump;
-	protected virtual void Awake() { }
-	protected virtual void Start() { }
+	protected virtual void Awake()
+	{
+		observableStateMachineTrigger = animator.GetBehaviour<ObservableStateMachineTrigger>();
+	}
+	protected virtual void Start()
+	{
+	}
 	public class IdleState : ImtStateMachine<T>.State
 	{
 		protected override void Enter() { }
@@ -54,5 +64,13 @@ public abstract class AbstractCharacterController<T> : MonoBehaviour
 	public class LandState : ImtStateMachine<T>.State
 	{
 		protected override void Update() { }
+	}
+	public void OnStateExitAsObservableByName(string stateInfoName, Action<UniRx.Triggers.ObservableStateMachineTrigger.OnStateInfo> Subscribe)
+	{
+		observableStateMachineTrigger.OnStateExitAsObservable().Where(x => x.StateInfo.IsName(stateInfoName)).Subscribe(Subscribe).AddTo(this);
+	}
+	public void OnStateEnterAsObservableByName(string stateInfoName, Action<UniRx.Triggers.ObservableStateMachineTrigger.OnStateInfo> Subscribe)
+	{
+		observableStateMachineTrigger.OnStateEnterAsObservable().Where(x => x.StateInfo.IsName(stateInfoName)).Subscribe(Subscribe).AddTo(this);
 	}
 }
