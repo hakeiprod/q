@@ -13,11 +13,7 @@ public class PlayerManager : MonoBehaviour
 		InstantiatePlayers();
 		ChangeActivePlayer(activePlayerIndex);
 	}
-	void InstantiatePlayers()
-	{
-		players.ForEach(p => playerInstances.Add(Instantiate(p, this.transform)));
-	}
-	void ChangeActivePlayer(int index)
+	public void ChangeActivePlayer(int index)
 	{
 		playerInstances.ForEach(p => p.gameObject.SetActive(false));
 		playerInstances[index].gameObject.SetActive(true);
@@ -25,5 +21,9 @@ public class PlayerManager : MonoBehaviour
 	public PlayerCharacter GetActivePlayerInstance()
 	{
 		return playerInstances[activePlayerIndex];
+	}
+	void InstantiatePlayers()
+	{
+		players.ForEach(p => playerInstances.Add(Instantiate(p, this.transform)));
 	}
 }

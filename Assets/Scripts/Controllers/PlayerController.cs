@@ -18,4 +18,11 @@ public class PlayerController : MonoBehaviour
 	{
 		playerManager.GetActivePlayerInstance().playerCharacterController.run = context.performed;
 	}
+	public void OnSelectSlot(InputAction.CallbackContext context)
+	{
+		var index = (int)context.ReadValue<float>();
+		if (index > 0)
+			playerManager.ChangeActivePlayer((int)context.ReadValue<float>() - 1);
+	}
+
 }
