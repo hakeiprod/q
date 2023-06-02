@@ -9,7 +9,7 @@ public class PlayerManager : MonoBehaviour
 	public CinemachineFreeLook cinemachineFreeLook;
 	public List<PlayerCharacter> players = new List<PlayerCharacter>();
 	List<PlayerCharacter> playerInstances = new List<PlayerCharacter>();
-	[System.NonSerialized] public int activePlayerIndex = 0;
+	[System.NonSerialized] int activePlayerIndex = 0;
 	void Start()
 	{
 		InstantiatePlayers();
@@ -17,13 +17,24 @@ public class PlayerManager : MonoBehaviour
 	}
 	public void ChangeActivePlayer(int index)
 	{
-		playerInstances.ForEach(p => p.gameObject.SetActive(false));
-		playerInstances[index].gameObject.SetActive(true);
+		InheritPlayerTransform(GetActivePlayerInstance(), SetActivePlayerInstance(index));
 		FollowedCamera();
 	}
 	public PlayerCharacter GetActivePlayerInstance()
 	{
 		return playerInstances[activePlayerIndex];
+	}
+	PlayerCharacter SetActivePlayerInstance(int index)
+	{
+		activePlayerIndex = index;
+		playerInstances.ForEach(p => p.gameObject.SetActive(false));
+		playerInstances[index].gameObject.SetActive(true);
+		return GetActivePlayerInstance();
+	}
+	void InheritPlayerTransform(PlayerCharacter prevActivePlayer, PlayerCharacter nextActivePlayer)
+	{
+		nextActivePlayer.transform.position = prevActivePlayer.transform.position;
+		nextActivePlayer.transform.rotation = prevActivePlayer.transform.rotation;
 	}
 	void InstantiatePlayers()
 	{
