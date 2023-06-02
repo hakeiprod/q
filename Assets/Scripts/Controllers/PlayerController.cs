@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 	{
 		var index = (int)context.ReadValue<float>();
 		if (index > 0)
-			playerManager.ChangeActivePlayer((int)context.ReadValue<float>() - 1);
+			playerManager.ChangeActivePlayer(index - 1);
 	}
 
 }

@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 public class PlayerManager : MonoBehaviour
 {
 	public PlayerController playerController;
+	public CinemachineFreeLook cinemachineFreeLook;
 	public List<PlayerCharacter> players = new List<PlayerCharacter>();
 	List<PlayerCharacter> playerInstances = new List<PlayerCharacter>();
 	[System.NonSerialized] public int activePlayerIndex = 0;
@@ -17,6 +19,7 @@ public class PlayerManager : MonoBehaviour
 	{
 		playerInstances.ForEach(p => p.gameObject.SetActive(false));
 		playerInstances[index].gameObject.SetActive(true);
+		FollowedCamera();
 	}
 	public PlayerCharacter GetActivePlayerInstance()
 	{
@@ -25,5 +28,10 @@ public class PlayerManager : MonoBehaviour
 	void InstantiatePlayers()
 	{
 		players.ForEach(p => playerInstances.Add(Instantiate(p, this.transform)));
+	}
+	void FollowedCamera()
+	{
+		cinemachineFreeLook.Follow = GetActivePlayerInstance().transform;
+		cinemachineFreeLook.LookAt = GetActivePlayerInstance().transform.Find("Skeleton").Find("Hips").Find("Spine").Find("Chest").Find("UpperChest").Find("Neck");
 	}
 }
