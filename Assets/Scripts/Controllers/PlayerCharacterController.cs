@@ -98,16 +98,13 @@ public class PlayerCharacterController : AbstractCharacterController
 	bool IsIdling() { return move == Vector2.zero; }
 	bool IsJampable() { return jump && characterController.isGrounded; }
 	float CalcGravity() { return -(playerCharacter.fall.speed * Time.deltaTime); }
-	Quaternion CalcRotation()
-	{
-		var inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;
-		float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
-		Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
-		return Quaternion.Lerp(transform.rotation, targetRotation, 10 * Time.deltaTime);
-	}
 	void Move(float moveSpeed, float y)
 	{
-		transform.rotation = CalcRotation();
-		characterController.Move(new Vector3(move.x * moveSpeed, y, move.y * moveSpeed));
+		var inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;
+		var targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
+		var targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
+		var targetDirection = Quaternion.Euler(0.0f, targetAngle, 0.0f) * Vector3.forward;
+		transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 10 * Time.deltaTime);
+		characterController.Move(targetDirection.normalized * moveSpeed + new Vector3(0.0f, y, 0.0f));
 	}
 }

@@ -21,8 +21,7 @@ public class PlayerController : MonoBehaviour
 	public void OnSelectSlot(InputAction.CallbackContext context)
 	{
 		var index = (int)context.ReadValue<float>();
-		if (index > 0)
-			playerManager.ChangeActivePlayer(index - 1);
+		if (index > 0) playerManager.ChangeActivePlayer(index - 1);
 	}
 
 }
