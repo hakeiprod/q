@@ -1113,9 +1113,9 @@ MonoBehaviour:
   health: 0
   stamina: 0
   walk:
-    speed: 0.01
+    speed: 1
   run:
-    speed: 0.03
+    speed: 3
   jump:
     speed: 5
     height: 2
@@ -1137,6 +1137,7 @@ MonoBehaviour:
   characterController: {fileID: 4416926081852918491}
   animator: {fileID: 6982812146204527121}
   playerCharacter: {fileID: -7209065362731425687}
+  RotationSmoothTime: 0.12
 --- !u!1 &4523139366846529165
 GameObject:
   m_ObjectHideFlags: 0
