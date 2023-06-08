@@ -27,6 +27,9 @@ public abstract class AbstractCharacterController : MonoBehaviour
 	[System.NonSerialized] public Vector2 move;
 	[System.NonSerialized] public bool jump;
 	[System.NonSerialized] public bool run;
+	[System.NonSerialized] public bool firstSkill;
+	[System.NonSerialized] public bool secondSkill;
+	[System.NonSerialized] public bool thirdSkill;
 	protected virtual void Awake()
 	{
 		observableStateMachineTrigger = animator.GetBehaviour<ObservableStateMachineTrigger>();
@@ -101,6 +104,9 @@ public abstract class AbstractCharacterController : MonoBehaviour
 			Context.animator.SetBool("Land", false);
 		}
 	}
+	public class FirstSkillState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController { }
+	public class SecondSkillState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController { }
+	public class ThirdSkillState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController { }
 	public string GetCurrentAnimatorClip()
 	{
 		return animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;

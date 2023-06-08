@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerController))]
+// [RequireComponent(typeof(PlayerInputAction))]
 public class PlayerManager : MonoBehaviour
 {
-	public PlayerController playerController;
+	public PlayerInputAction playerInputAction;
 	public CinemachineFreeLook cinemachineFreeLook;
-	public List<PlayerCharacter> players = new List<PlayerCharacter>();
-	List<PlayerCharacter> playerInstances = new List<PlayerCharacter>();
+	public List<AbstractPlayerCharacter> players = new List<AbstractPlayerCharacter>();
+	List<AbstractPlayerCharacter> playerInstances = new List<AbstractPlayerCharacter>();
 	[System.NonSerialized] int activePlayerIndex = 0;
 	void Start()
 	{
@@ -20,18 +20,18 @@ public class PlayerManager : MonoBehaviour
 		InheritPlayerTransform(GetActivePlayerInstance(), SetActivePlayerInstance(index));
 		FollowedCamera();
 	}
-	public PlayerCharacter GetActivePlayerInstance()
+	public AbstractPlayerCharacter GetActivePlayerInstance()
 	{
 		return playerInstances[activePlayerIndex];
 	}
-	PlayerCharacter SetActivePlayerInstance(int index)
+	AbstractPlayerCharacter SetActivePlayerInstance(int index)
 	{
 		activePlayerIndex = index;
 		playerInstances.ForEach(p => p.gameObject.SetActive(false));
 		playerInstances[index].gameObject.SetActive(true);
 		return GetActivePlayerInstance();
 	}
-	void InheritPlayerTransform(PlayerCharacter prevActivePlayer, PlayerCharacter nextActivePlayer)
+	void InheritPlayerTransform(AbstractPlayerCharacter prevActivePlayer, AbstractPlayerCharacter nextActivePlayer)
 	{
 		nextActivePlayer.transform.position = prevActivePlayer.transform.position;
 		nextActivePlayer.transform.rotation = prevActivePlayer.transform.rotation;

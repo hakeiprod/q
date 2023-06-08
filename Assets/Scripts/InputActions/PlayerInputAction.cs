@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerManager))]
-public class PlayerController : MonoBehaviour
+public class PlayerInputAction : MonoBehaviour
 {
 	public PlayerManager playerManager;
 
@@ -22,6 +22,18 @@ public class PlayerController : MonoBehaviour
 	{
 		var index = (int)context.ReadValue<float>();
 		if (index > 0) playerManager.ChangeActivePlayer(index - 1);
+	}
+	public void OnFirstSkill(InputAction.CallbackContext context)
+	{
+		playerManager.GetActivePlayerInstance().playerCharacterController.firstSkill = context.performed;
+	}
+	public void OnSecondSkill(InputAction.CallbackContext context)
+	{
+		playerManager.GetActivePlayerInstance().playerCharacterController.secondSkill = context.performed;
+	}
+	public void OnThirdSkill(InputAction.CallbackContext context)
+	{
+		playerManager.GetActivePlayerInstance().playerCharacterController.thirdSkill = context.performed;
 	}
 
 }
