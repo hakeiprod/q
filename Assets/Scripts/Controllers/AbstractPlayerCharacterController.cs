@@ -37,7 +37,7 @@ public abstract class AbstractPlayerCharacterController : AbstractCharacterContr
 		base.Start();
 		stateMachine.Update();
 	}
-	void Update()
+	protected virtual void Update()
 	{
 		stateMachine.Update();
 		Debug.Log(stateMachine.CurrentStateName);
@@ -55,7 +55,7 @@ public abstract class AbstractPlayerCharacterController : AbstractCharacterContr
 	{
 		protected override void Update()
 		{
-			Context.Move(Context.playerCharacter.walk.speed, -Context.playerCharacter.fall.speed);
+			Context.Move(Context.playerCharacter.defaultStatus.walk.speed, -Context.playerCharacter.defaultStatus.fall.speed);
 			if (Context.GetCurrentAnimatorClip() != "Walk_N") return;
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
@@ -69,22 +69,22 @@ public abstract class AbstractPlayerCharacterController : AbstractCharacterContr
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
 			if (!Context.run) Context.stateMachine.SendEvent((int)Context.State["walk"]);
-			Context.Move(Context.playerCharacter.run.speed, -Context.playerCharacter.fall.speed);
+			Context.Move(Context.playerCharacter.defaultStatus.run.speed, -Context.playerCharacter.defaultStatus.fall.speed);
 		}
 	}
 	public class PlayerJumpState<T> : JumpState<T> where T : AbstractPlayerCharacterController
 	{
 		protected override void Update()
 		{
-			if (Context.transform.position.y > Context.playerCharacter.jump.height) Context.stateMachine.SendEvent((int)Context.State["fall"]);
-			Context.Move(Context.playerCharacter.walk.speed, Context.playerCharacter.jump.speed);
+			if (Context.transform.position.y > Context.playerCharacter.defaultStatus.jump.height) Context.stateMachine.SendEvent((int)Context.State["fall"]);
+			Context.Move(Context.playerCharacter.defaultStatus.walk.speed, Context.playerCharacter.defaultStatus.jump.speed);
 		}
 	}
 	public class PlayerFallState<T> : FallState<T> where T : AbstractPlayerCharacterController
 	{
 		protected override void Update()
 		{
-			Context.Move(Context.playerCharacter.walk.speed, -Context.playerCharacter.fall.speed);
+			Context.Move(Context.playerCharacter.defaultStatus.walk.speed, -Context.playerCharacter.defaultStatus.fall.speed);
 			if (Context.GetCurrentAnimatorClip() != "InAir") return;
 			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["land"]);
 		}
@@ -96,21 +96,6 @@ public abstract class AbstractPlayerCharacterController : AbstractCharacterContr
 			if (Context.GetCurrentAnimatorClip() != "JumpLand") return;
 			if (Context.animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1) Context.stateMachine.SendEvent((int)Context.State["idle"]);
 		}
-	}
-	public class PlayerFirstSkillState<T> : FirstSkillState<T> where T : AbstractPlayerCharacterController
-	{
-		protected override void Update()
-		{ }
-	}
-	public class PlayerSecondSkillState<T> : SecondSkillState<T> where T : AbstractPlayerCharacterController
-	{
-		protected override void Update()
-		{ }
-	}
-	public class PlayerThirdSkillState<T> : ThirdSkillState<T> where T : AbstractPlayerCharacterController
-	{
-		protected override void Update()
-		{ }
 	}
 	bool IsIdling() { return move == Vector2.zero; }
 	bool IsJampable() { return jump && characterController.isGrounded; }

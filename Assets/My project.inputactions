@@ -417,7 +417,7 @@
                 {
                     "name": "",
                     "id": "536eea2d-46f0-4d7b-8a80-6a018371cf76",
-                    "path": "",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -428,11 +428,22 @@
                 {
                     "name": "",
                     "id": "e506a84c-4b83-4ce6-847a-6a8c9bf057d3",
-                    "path": "",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "ThirdSkill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11476114-84b8-4701-ad28-2883dfd3f90d",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FirstSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

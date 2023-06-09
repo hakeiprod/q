@@ -1,21 +1,25 @@
 using IceMilkTea.Core;
+using UnityEngine;
+using UniRx;
 
 public class IliasPlayerCharacterController : AbstractPlayerCharacterController
 {
 	public ImtStateMachine<IliasPlayerCharacterController> iliasStateMachine;
-	public class IliasPlayerFirstSkillState : PlayerFirstSkillState<IliasPlayerCharacterController>
+	protected override void Start()
 	{
-		protected override void Update()
-		{ }
+		base.Start();
+		this.ObserveFirstSkill(10);
 	}
-	public class IliasPlayerSecondSkillState : PlayerSecondSkillState<IliasPlayerCharacterController>
+	protected override void Update()
 	{
-		protected override void Update()
-		{ }
+		base.Update();
 	}
-	public class IliasPlayerThirdSkillState : PlayerThirdSkillState<IliasPlayerCharacterController>
+	void ObserveFirstSkill(int seconds)
 	{
-		protected override void Update()
-		{ }
+		this.ObserveEveryValueChanged(x => x.firstSkill).Where(x => x)
+			.ThrottleFirst(System.TimeSpan.FromSeconds(seconds))
+			.Subscribe(_ => playerCharacter.defaultStatus.run.speed = 20);
+		Observable.Timer(System.TimeSpan.FromSeconds(seconds))
+			.Subscribe(_ => playerCharacter.defaultStatus.run.speed = 8);
 	}
 }

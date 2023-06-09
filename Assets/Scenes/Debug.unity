@@ -1036,9 +1036,9 @@ MonoBehaviour:
   cinemachineFreeLook: {fileID: 61929513}
   players:
   - {fileID: -9181456928602046903, guid: e7eebf79ea210644d88b48cf6a20f10b, type: 3}
-  - {fileID: -7209065362731425687, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
-  - {fileID: -7209065362731425687, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
-  - {fileID: -7209065362731425687, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+  - {fileID: 3388030272338332722, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+  - {fileID: 3388030272338332722, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+  - {fileID: 3388030272338332722, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
 --- !u!4 &1433529172
 Transform:
   m_ObjectHideFlags: 0
@@ -1073,7 +1073,7 @@ MonoBehaviour:
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1433529170}
         m_TargetAssemblyTypeName: 
         m_MethodName: 
         m_Mode: 1
@@ -1213,15 +1213,51 @@ MonoBehaviour:
     m_ActionId: 659dd825-1dac-418a-bfe8-9a2d7cc0160c
     m_ActionName: Player/Camera[/Mouse/delta]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1433529175}
+        m_TargetAssemblyTypeName: PlayerInputAction, Assembly-CSharp
+        m_MethodName: OnFirstSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 19bc5f87-702b-45bf-9277-f5ce7e23f84a
     m_ActionName: Player/FirstSkill
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1433529175}
+        m_TargetAssemblyTypeName: PlayerInputAction, Assembly-CSharp
+        m_MethodName: OnSecondSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 67392f20-5501-44f9-a83a-ae013aeadd38
     m_ActionName: Player/SecondSkill
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1433529175}
+        m_TargetAssemblyTypeName: PlayerInputAction, Assembly-CSharp
+        m_MethodName: OnThirdSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 66bf18dd-170e-44f5-a981-4b7e6b644e86
     m_ActionName: Player/ThirdSkill
   m_NeverAutoSwitchControlSchemes: 0

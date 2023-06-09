@@ -34,9 +34,7 @@ public abstract class AbstractCharacterController : MonoBehaviour
 	{
 		observableStateMachineTrigger = animator.GetBehaviour<ObservableStateMachineTrigger>();
 	}
-	protected virtual void Start()
-	{
-	}
+	protected virtual void Start() { }
 	public class IdleState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController
 	{
 		protected override void Enter()
@@ -104,9 +102,6 @@ public abstract class AbstractCharacterController : MonoBehaviour
 			Context.animator.SetBool("Land", false);
 		}
 	}
-	public class FirstSkillState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController { }
-	public class SecondSkillState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController { }
-	public class ThirdSkillState<T> : ImtStateMachine<T>.State where T : AbstractCharacterController { }
 	public string GetCurrentAnimatorClip()
 	{
 		return animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
