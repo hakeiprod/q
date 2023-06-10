@@ -1126,17 +1126,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a895c9efd6bf634e9c4403af6c6d45d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  stamina: 0
-  walk:
-    speed: 1
-  run:
-    speed: 3
-  jump:
-    speed: 5
-    height: 2
-  fall:
-    speed: 5
+  defaultStatus:
+    health: 0
+    stamina: 0
+    walk:
+      speed: 3
+    run:
+      speed: 5
+    jump:
+      speed: 8
+      height: 2
+    fall:
+      speed: 8
   playerCharacterController: {fileID: -7209065362731425687}
 --- !u!1 &4523139366846529165
 GameObject:

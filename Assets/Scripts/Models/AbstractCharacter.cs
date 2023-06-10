@@ -2,28 +2,31 @@ using UnityEngine;
 
 public abstract class AbstractCharacter : MonoBehaviour
 {
-	public Status defaultStatus;
-	[System.Serializable]
-	public abstract class Status
-	{
-		public int health;
-		public int stamina;
-		[SerializeField] public Walk walk;
-		[SerializeField] public Run run;
-		[SerializeField] public Jump jump;
-		[SerializeField] public Fall fall;
-		[System.Serializable] public class Walk : BaseAction { }
-		[System.Serializable] public class Run : BaseAction { }
-		[System.Serializable] public class Fall : BaseAction { }
-		[System.Serializable]
-		public class Jump : BaseAction
-		{
-			public float height;
-		}
-		public abstract class BaseAction
-		{
-			public float speed;
-		}
+	[SerializeField] public Status defaultStatus;
+	[System.NonSerialized] public Status currentStatus;
 
+	void Awake()
+	{
+		currentStatus = defaultStatus;
+	}
+}
+[System.Serializable]
+public class Status
+{
+	public int health;
+	public int stamina;
+	[SerializeField] public Action walk;
+	[SerializeField] public Action run;
+	[SerializeField] public Jump jump;
+	[SerializeField] public Action fall;
+	[System.Serializable]
+	public class Jump : Action
+	{
+		public float height;
+	}
+	[System.Serializable]
+	public class Action
+	{
+		public float speed;
 	}
 }

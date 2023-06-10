@@ -21,9 +21,11 @@ public abstract class AbstractPlayerCharacterController : AbstractCharacterContr
 		stateMachine.AddTransition<PlayerWalkState<AbstractPlayerCharacterController>, PlayerIdleState<AbstractPlayerCharacterController>>((int)State["idle"]);
 		stateMachine.AddTransition<PlayerWalkState<AbstractPlayerCharacterController>, PlayerJumpState<AbstractPlayerCharacterController>>((int)State["jump"]);
 		stateMachine.AddTransition<PlayerWalkState<AbstractPlayerCharacterController>, PlayerRunState<AbstractPlayerCharacterController>>((int)State["run"]);
+		stateMachine.AddTransition<PlayerWalkState<AbstractPlayerCharacterController>, PlayerFallState<AbstractPlayerCharacterController>>((int)State["fall"]);
 
 		stateMachine.AddTransition<PlayerRunState<AbstractPlayerCharacterController>, PlayerWalkState<AbstractPlayerCharacterController>>((int)State["walk"]);
 		stateMachine.AddTransition<PlayerRunState<AbstractPlayerCharacterController>, PlayerJumpState<AbstractPlayerCharacterController>>((int)State["jump"]);
+		stateMachine.AddTransition<PlayerRunState<AbstractPlayerCharacterController>, PlayerFallState<AbstractPlayerCharacterController>>((int)State["fall"]);
 
 		stateMachine.AddTransition<PlayerJumpState<AbstractPlayerCharacterController>, PlayerFallState<AbstractPlayerCharacterController>>((int)State["fall"]);
 
@@ -55,7 +57,8 @@ public abstract class AbstractPlayerCharacterController : AbstractCharacterContr
 	{
 		protected override void Update()
 		{
-			Context.Move(Context.playerCharacter.defaultStatus.walk.speed, -Context.playerCharacter.defaultStatus.fall.speed);
+			Context.Move(Context.playerCharacter.currentStatus.walk.speed, -Context.playerCharacter.currentStatus.fall.speed);
+			if (!Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["fall"]);
 			if (Context.GetCurrentAnimatorClip() != "Walk_N") return;
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
@@ -66,25 +69,26 @@ public abstract class AbstractPlayerCharacterController : AbstractCharacterContr
 	{
 		protected override void Update()
 		{
+			if (!Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["fall"]);
 			if (Context.IsJampable()) Context.stateMachine.SendEvent((int)Context.State["jump"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent((int)Context.State["idle"]);
 			if (!Context.run) Context.stateMachine.SendEvent((int)Context.State["walk"]);
-			Context.Move(Context.playerCharacter.defaultStatus.run.speed, -Context.playerCharacter.defaultStatus.fall.speed);
+			Context.Move(Context.playerCharacter.currentStatus.run.speed, -Context.playerCharacter.currentStatus.fall.speed);
 		}
 	}
 	public class PlayerJumpState<T> : JumpState<T> where T : AbstractPlayerCharacterController
 	{
 		protected override void Update()
 		{
-			if (Context.transform.position.y > Context.playerCharacter.defaultStatus.jump.height) Context.stateMachine.SendEvent((int)Context.State["fall"]);
-			Context.Move(Context.playerCharacter.defaultStatus.walk.speed, Context.playerCharacter.defaultStatus.jump.speed);
+			if (Context.transform.position.y > Context.playerCharacter.currentStatus.jump.height) Context.stateMachine.SendEvent((int)Context.State["fall"]);
+			Context.Move(Context.playerCharacter.currentStatus.walk.speed, Context.playerCharacter.currentStatus.jump.speed);
 		}
 	}
 	public class PlayerFallState<T> : FallState<T> where T : AbstractPlayerCharacterController
 	{
 		protected override void Update()
 		{
-			Context.Move(Context.playerCharacter.defaultStatus.walk.speed, -Context.playerCharacter.defaultStatus.fall.speed);
+			Context.Move(Context.playerCharacter.currentStatus.walk.speed, -Context.playerCharacter.currentStatus.fall.speed);
 			if (Context.GetCurrentAnimatorClip() != "InAir") return;
 			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent((int)Context.State["land"]);
 		}

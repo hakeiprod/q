@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-// [RequireComponent(typeof(PlayerInputAction))]
+[RequireComponent(typeof(PlayerInputAction))]
 public class PlayerManager : MonoBehaviour
 {
 	public PlayerInputAction playerInputAction;
