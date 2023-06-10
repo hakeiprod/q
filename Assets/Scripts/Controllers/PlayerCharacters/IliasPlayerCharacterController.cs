@@ -1,4 +1,3 @@
-using IceMilkTea.Core;
 using UniRx;
 
 public class IliasPlayerCharacterController : AbstractPlayerCharacterController
@@ -23,8 +22,8 @@ public class IliasPlayerCharacterController : AbstractPlayerCharacterController
 	{
 		this.ObserveEveryValueChanged(x => x.firstSkill).Where(x => x)
 			.ThrottleFirst(System.TimeSpan.FromSeconds(seconds))
-			.Subscribe(_ => playerCharacter.currentStatus.run.speed = iliasPlayerCharacter.firstSkillStatus.run.speed);
+			.Subscribe(_ => playerCharacter.currentStatus = iliasPlayerCharacter.firstSkillStatus);
 		Observable.Timer(System.TimeSpan.FromSeconds(seconds))
-			.Subscribe(_ => playerCharacter.currentStatus.run.speed = playerCharacter.defaultStatus.run.speed);
+			.Subscribe(_ => playerCharacter.currentStatus = playerCharacter.defaultStatus);
 	}
 }

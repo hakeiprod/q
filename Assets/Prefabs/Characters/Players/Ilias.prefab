@@ -1114,6 +1114,7 @@ MonoBehaviour:
   animator: {fileID: 6982812146204527121}
   playerCharacter: {fileID: -9181456928602046903}
   RotationSmoothTime: 0.12
+  iliasPlayerCharacter: {fileID: 0}
 --- !u!114 &-9181456928602046903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1143,9 +1144,9 @@ MonoBehaviour:
     health: 0
     stamina: 0
     walk:
-      speed: 5
-    run:
       speed: 7
+    run:
+      speed: 10
     jump:
       speed: 8
       height: 3
