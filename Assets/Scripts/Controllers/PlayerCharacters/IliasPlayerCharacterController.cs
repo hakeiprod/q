@@ -9,11 +9,6 @@ public class IliasPlayerCharacterController : AbstractPlayerCharacterController
 		base.Awake();
 		this.ObserveFirstSkill(10);
 	}
-	protected override void Start()
-	{
-		base.Start();
-		this.ObserveFirstSkill(10);
-	}
 	void ObserveFirstSkill(int seconds)
 	{
 		this.ObserveEveryValueChanged(x => x.firstSkill).Where(x => x)

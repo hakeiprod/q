@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
 	public List<AbstractPlayerCharacter> players = new List<AbstractPlayerCharacter>();
 	List<AbstractPlayerCharacter> playerInstances = new List<AbstractPlayerCharacter>();
 	[System.NonSerialized] int activePlayerIndex = 0;
-	void Start()
+	void Awake()
 	{
 		InstantiatePlayers();
 		ChangeActivePlayer(activePlayerIndex);
@@ -43,6 +43,6 @@ public class PlayerManager : MonoBehaviour
 	void FollowedCamera()
 	{
 		cinemachineFreeLook.Follow = GetActivePlayerInstance().transform;
-		cinemachineFreeLook.LookAt = GetActivePlayerInstance().transform.Find("Skeleton").Find("Hips").Find("Spine").Find("Chest").Find("UpperChest").Find("Neck");
+		cinemachineFreeLook.LookAt = GetActivePlayerInstance().transform.Find("PlayerCameraRoot");
 	}
 }
