@@ -1,0 +1,4 @@
+public class NotePlayerCharacter : AbstractPlayerCharacter
+{
+
+}

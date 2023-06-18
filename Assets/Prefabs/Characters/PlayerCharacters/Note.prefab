@@ -1032,13 +1032,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3893294197879345259}
   - component: {fileID: 6982812146204527121}
-  - component: {fileID: -8613412963751110921}
-  - component: {fileID: -4412986073392555124}
-  - component: {fileID: -3076929901653646912}
-  - component: {fileID: -4579348549298534608}
-  m_Layer: 0
-  m_Name: Mother
-  m_TagString: Untagged
+  - component: {fileID: 4416926081852918491}
+  - component: {fileID: 7678748937449944763}
+  - component: {fileID: 6268665583673984321}
+  m_Layer: 8
+  m_Name: Note
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1081,8 +1080,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!136 &-8613412963751110921
-CapsuleCollider:
+--- !u!143 &4416926081852918491
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1091,11 +1090,15 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.9345021
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.89716554, z: 0}
---- !u!114 &-4412986073392555124
+  serializedVersion: 2
+  m_Height: 1.6
+  m_Radius: 0.31
+  m_SlopeLimit: 45
+  m_StepOffset: 0.25
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 0.8, z: 0}
+--- !u!114 &7678748937449944763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1104,7 +1107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4416926081852918481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5317138c35e75574890fd0b4ca44023c, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f4eda5793fe62041a22f42d030af5f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   defaultStatus:
@@ -1119,8 +1122,8 @@ MonoBehaviour:
       height: 0
     fall:
       speed: 0
-  dialogueSystemTrigger: {fileID: -3076929901653646912}
---- !u!114 &-3076929901653646912
+  playerCharacterController: {fileID: 6268665583673984321}
+--- !u!114 &6268665583673984321
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1129,94 +1132,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4416926081852918481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c593457cd8105e148906690e1707c592, type: 3}
+  m_Script: {fileID: 11500000, guid: 00f753c2a5172d24baba0c6c0b006529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trigger: 32
-  condition:
-    luaConditions: []
-    questConditions: []
-    acceptedTags: []
-    acceptedGameObjects: []
-    luaWizardIndex: -1
-    lastEvaluationValue: 0
-  setQuestState: 1
-  questName: 
-  questState: 0
-  setQuestEntryState: 0
-  questEntryNumber: 1
-  questEntryState: 0
-  setAnotherQuestEntryState: 0
-  anotherQuestEntryNumber: 1
-  anotherQuestEntryState: 0
-  luaCode: 
-  sequence: 
-  sequenceSpeaker: {fileID: 0}
-  sequenceListener: {fileID: 0}
-  waitOneFrameOnStartOrEnable: 1
-  alertMessage: 
-  textTable: {fileID: 0}
-  alertDuration: 0
-  sendMessages: []
-  barkSource: 0
-  barkConversation: 
-  barkText: 
-  barkTextSequence: 
-  barker: {fileID: 0}
-  barkTarget: {fileID: 0}
-  barkOrder: 0
-  allowBarksDuringConversations: 0
-  skipBarkIfNoValidEntries: 0
-  cacheBarkLines: 0
-  conversation: New Conversation 1
-  conversationConversant: {fileID: 3893294197879345259}
-  conversationActor: {fileID: 0}
-  startConversationEntryID: -1
-  exclusive: 0
-  replace: 0
-  skipIfNoValidEntries: 0
-  preventRestartOnSameFrameEnded: 0
-  stopConversationOnTriggerExit: 0
-  stopConversationIfTooFar: 0
-  maxConversationDistance: 5
-  monitorConversationDistanceFrequency: 1
-  showCursorDuringConversation: 0
-  pauseGameDuringConversation: 0
-  setActiveActions: []
-  setEnabledActions: []
-  setAnimatorStateActions: []
-  onExecute:
-    m_PersistentCalls:
-      m_Calls: []
-  useConversationTitlePicker: 1
-  useBarkTitlePicker: 1
-  useQuestNamePicker: 1
-  selectedDatabase: {fileID: 11400000, guid: 113342b38c5527f4696116e3f5875109, type: 2}
---- !u!114 &-4579348549298534608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4416926081852918481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 274b80ab5b659c646ba9338870d14625, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  overrideName: 
-  overrideUseMessage: 
-  maxUseDistance: 30
-  events:
-    onSelect:
-      m_PersistentCalls:
-        m_Calls: []
-    onDeselect:
-      m_PersistentCalls:
-        m_Calls: []
-    onUse:
-      m_PersistentCalls:
-        m_Calls: []
+  characterController: {fileID: 4416926081852918491}
+  animator: {fileID: 6982812146204527121}
+  playerCharacter: {fileID: 7678748937449944763}
+  RotationSmoothTime: 0.12
 --- !u!1 &4523139366846529165
 GameObject:
   m_ObjectHideFlags: 0
