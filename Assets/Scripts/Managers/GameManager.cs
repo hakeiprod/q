@@ -6,9 +6,8 @@ public class GameManager : Singleton<GameManager>
 	public PlayerManager playerManager;
 	public enum State
 	{
-		Default,
-		Battle,
-		Timeline,
+		Watch,
+		Play
 	}
 	void Start()
 	{
