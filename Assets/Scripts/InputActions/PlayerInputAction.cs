@@ -8,15 +8,15 @@ public class PlayerInputAction : MonoBehaviour
 
 	public void OnMove(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().playerCharacterController.move = context.ReadValue<Vector2>();
+		playerManager.GetActivePlayerInstance().move = context.ReadValue<Vector2>();
 	}
 	public void OnJump(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().playerCharacterController.jump = context.performed;
+		playerManager.GetActivePlayerInstance().jump = context.performed;
 	}
 	public void OnRun(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().playerCharacterController.run = context.performed;
+		playerManager.GetActivePlayerInstance().run = context.performed;
 	}
 	public void OnSelectSlot(InputAction.CallbackContext context)
 	{
@@ -25,15 +25,15 @@ public class PlayerInputAction : MonoBehaviour
 	}
 	public void OnFirstSkill(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().playerCharacterController.firstSkill = context.performed;
+		playerManager.GetActivePlayerInstance().firstSkill = context.performed;
 	}
 	public void OnSecondSkill(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().playerCharacterController.secondSkill = context.performed;
+		playerManager.GetActivePlayerInstance().secondSkill = context.performed;
 	}
 	public void OnThirdSkill(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().playerCharacterController.thirdSkill = context.performed;
+		playerManager.GetActivePlayerInstance().thirdSkill = context.performed;
 	}
 
 }

@@ -1033,7 +1033,6 @@ GameObject:
   - component: {fileID: 3893294197879345259}
   - component: {fileID: 6982812146204527121}
   - component: {fileID: 4416926081852918491}
-  - component: {fileID: -7209065362731425687}
   - component: {fileID: 3388030272338332722}
   m_Layer: 8
   m_Name: PlayerArmature
@@ -1098,22 +1097,6 @@ CharacterController:
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.8, z: 0}
---- !u!114 &-7209065362731425687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4416926081852918481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c46855f0adcac54a86d63a71304295a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterController: {fileID: 4416926081852918491}
-  animator: {fileID: 6982812146204527121}
-  playerCharacter: {fileID: 3388030272338332722}
-  RotationSmoothTime: 0.12
 --- !u!114 &3388030272338332722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1126,6 +1109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a895c9efd6bf634e9c4403af6c6d45d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 6982812146204527121}
+  characterController: {fileID: 4416926081852918491}
   defaultStatus:
     health: 0
     stamina: 0
@@ -1138,7 +1123,7 @@ MonoBehaviour:
       height: 2
     fall:
       speed: 8
-  playerCharacterController: {fileID: -7209065362731425687}
+  RotationSmoothTime: 0.12
 --- !u!1 &4523139366846529165
 GameObject:
   m_ObjectHideFlags: 0

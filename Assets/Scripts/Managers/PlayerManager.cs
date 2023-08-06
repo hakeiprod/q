@@ -7,8 +7,8 @@ public class PlayerManager : MonoBehaviour
 {
 	public PlayerInputAction playerInputAction;
 	public CinemachineFreeLook cinemachineFreeLook;
-	public List<AbstractPlayerCharacter> players = new List<AbstractPlayerCharacter>();
-	List<AbstractPlayerCharacter> playerInstances = new List<AbstractPlayerCharacter>();
+	public List<AbstractPlayerCharacter> players = new();
+	readonly List<AbstractPlayerCharacter> playerInstances = new();
 	[System.NonSerialized] int activePlayerIndex = 0;
 	void Awake()
 	{
@@ -38,7 +38,7 @@ public class PlayerManager : MonoBehaviour
 	}
 	void InstantiatePlayers()
 	{
-		players.ForEach(p => playerInstances.Add(Instantiate(p, this.transform)));
+		players.ForEach(p => playerInstances.Add(Instantiate(p, transform)));
 	}
 	void FollowedCamera()
 	{

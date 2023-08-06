@@ -1107,6 +1107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5317138c35e75574890fd0b4ca44023c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 6982812146204527121}
+  characterController: {fileID: 0}
   defaultStatus:
     health: 0
     stamina: 0
@@ -1119,6 +1121,7 @@ MonoBehaviour:
       height: 0
     fall:
       speed: 0
+  RotationSmoothTime: 0.12
   dialogueSystemTrigger: {fileID: -3076929901653646912}
 --- !u!114 &-3076929901653646912
 MonoBehaviour:
