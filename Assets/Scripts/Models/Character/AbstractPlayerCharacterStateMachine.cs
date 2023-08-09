@@ -2,7 +2,7 @@ using IceMilkTea.Core;
 
 public abstract partial class AbstractPlayerCharacter
 {
-	void SetStates()
+	void SetStateMachine()
 	{
 		stateMachine = new ImtStateMachine<AbstractPlayerCharacter>(this);
 		stateMachine.SetStartState<PlayerIdleState<AbstractPlayerCharacter>>();
@@ -44,7 +44,7 @@ public abstract partial class AbstractPlayerCharacter
 			if (Context.GetCurrentAnimatorClip() != "Walk_N") return;
 			if (Context.IsJampable()) Context.stateMachine.SendEvent(Context.state["jump"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent(Context.state["idle"]);
-			if (Context.run) Context.stateMachine.SendEvent(Context.state["run"]);
+			if (Context.playerInputAction.run) Context.stateMachine.SendEvent(Context.state["run"]);
 		}
 	}
 	public class PlayerRunState<T> : RunState<T> where T : AbstractPlayerCharacter
@@ -54,7 +54,7 @@ public abstract partial class AbstractPlayerCharacter
 			if (!Context.characterController.isGrounded) Context.stateMachine.SendEvent(Context.state["fall"]);
 			if (Context.IsJampable()) Context.stateMachine.SendEvent(Context.state["jump"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent(Context.state["idle"]);
-			if (!Context.run) Context.stateMachine.SendEvent(Context.state["walk"]);
+			if (!Context.playerInputAction.run) Context.stateMachine.SendEvent(Context.state["walk"]);
 			Context.Move(Context.currentStatus.run.speed, -Context.currentStatus.fall.speed);
 		}
 	}

@@ -1123,8 +1123,16 @@ MonoBehaviour:
       height: 2
     fall:
       speed: 8
-  RotationSmoothTime: 0.12
-  playerCharacterController: {fileID: 0}
+  abilities:
+  - type: 0
+    coolTime: 5
+    effectTime: 5
+  - type: 0
+    coolTime: 0
+    effectTime: 0
+  - type: 0
+    coolTime: 0
+    effectTime: 0
   firstSkillStatus:
     health: 0
     stamina: 0

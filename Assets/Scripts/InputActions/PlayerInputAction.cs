@@ -5,18 +5,24 @@ using UnityEngine.InputSystem;
 public class PlayerInputAction : MonoBehaviour
 {
 	public PlayerManager playerManager;
+	[System.NonSerialized] public Vector2 move;
+	[System.NonSerialized] public bool jump;
+	[System.NonSerialized] public bool run;
+	[System.NonSerialized] public bool firstSkill;
+	[System.NonSerialized] public bool secondSkill;
+	[System.NonSerialized] public bool thirdSkill;
 
 	public void OnMove(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().move = context.ReadValue<Vector2>();
+		move = context.ReadValue<Vector2>();
 	}
 	public void OnJump(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().jump = context.performed;
+		jump = context.performed;
 	}
 	public void OnRun(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().run = context.performed;
+		run = context.performed;
 	}
 	public void OnSelectSlot(InputAction.CallbackContext context)
 	{
@@ -25,15 +31,15 @@ public class PlayerInputAction : MonoBehaviour
 	}
 	public void OnFirstSkill(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().firstSkill = context.performed;
+		firstSkill = context.performed;
 	}
 	public void OnSecondSkill(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().secondSkill = context.performed;
+		secondSkill = context.performed;
 	}
 	public void OnThirdSkill(InputAction.CallbackContext context)
 	{
-		playerManager.GetActivePlayerInstance().thirdSkill = context.performed;
+		thirdSkill = context.performed;
 	}
 
 }

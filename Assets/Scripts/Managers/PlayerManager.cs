@@ -38,7 +38,12 @@ public class PlayerManager : MonoBehaviour
 	}
 	void InstantiatePlayers()
 	{
-		players.ForEach(p => playerInstances.Add(Instantiate(p, transform)));
+		players.ForEach(p =>
+		{
+			var instance = Instantiate(p, transform);
+			instance.playerInputAction = playerInputAction;
+			playerInstances.Add(instance);
+		});
 	}
 	void FollowedCamera()
 	{
