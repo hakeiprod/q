@@ -7,10 +7,10 @@ public class PlayerManager : MonoBehaviour
 {
 	public PlayerInputAction playerInputAction;
 	public CinemachineFreeLook cinemachineFreeLook;
-	public List<AbstractPlayerCharacter> players = new();
-	readonly List<AbstractPlayerCharacter> playerInstances = new();
+	public List<AbstractPlayerCharacter> players = new List<AbstractPlayerCharacter>();
+	readonly List<AbstractPlayerCharacter> playerInstances = new List<AbstractPlayerCharacter>();
 	[System.NonSerialized] int activePlayerIndex = 0;
-	void Awake()
+	protected void Awake()
 	{
 		InstantiatePlayers();
 		ChangeActivePlayer(activePlayerIndex);

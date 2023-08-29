@@ -8,7 +8,6 @@ public class MotherNonePlayerCharacter : AbstractCharacter
 	// Start is called before the first frame update
 	void Start()
 	{
-		dialogueSystemTrigger.conversationActor = GameManager.Instance.playerManager.GetActivePlayerInstance().transform;
 	}
 
 	// Update is called once per frame

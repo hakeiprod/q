@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,12 +7,12 @@ using UnityEngine.InputSystem;
 public class PlayerInputAction : MonoBehaviour
 {
 	public PlayerManager playerManager;
-	[System.NonSerialized] public Vector2 move;
-	[System.NonSerialized] public bool jump;
-	[System.NonSerialized] public bool run;
-	[System.NonSerialized] public bool firstSkill;
-	[System.NonSerialized] public bool secondSkill;
-	[System.NonSerialized] public bool thirdSkill;
+	[NonSerialized] public Vector2 move;
+	[NonSerialized] public bool jump;
+	[NonSerialized] public bool run;
+	[NonSerialized] public bool ability0 = false;
+	[NonSerialized] public bool ability1 = false;
+	[NonSerialized] public bool ability2 = false;
 
 	public void OnMove(InputAction.CallbackContext context)
 	{
@@ -31,15 +33,15 @@ public class PlayerInputAction : MonoBehaviour
 	}
 	public void OnFirstSkill(InputAction.CallbackContext context)
 	{
-		firstSkill = context.performed;
+		ability0 = context.performed;
 	}
 	public void OnSecondSkill(InputAction.CallbackContext context)
 	{
-		secondSkill = context.performed;
+		ability1 = context.performed;
 	}
 	public void OnThirdSkill(InputAction.CallbackContext context)
 	{
-		thirdSkill = context.performed;
+		ability2 = context.performed;
 	}
 
 }

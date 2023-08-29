@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using IceMilkTea.Core;
 using UniRx;
 using UniRx.Triggers;
@@ -8,8 +9,8 @@ public abstract partial class AbstractPlayerCharacter : AbstractCharacter
 {
 	[NonSerialized] public ObservableStateMachineTrigger observableStateMachineTrigger;
 	[NonSerialized] public PlayerInputAction playerInputAction;
-	[NonSerialized] public float RotationSmoothTime = 0.12f;
-	[SerializeField] public Ability[] abilities;
+	[NonSerialized] float RotationSmoothTime = 0.12f;
+	public List<Ability> abilities = new List<Ability>();
 	float _rotationVelocity;
 	ImtStateMachine<AbstractPlayerCharacter> stateMachine;
 	protected override void Awake()
@@ -21,6 +22,7 @@ public abstract partial class AbstractPlayerCharacter : AbstractCharacter
 	protected virtual void Start()
 	{
 		stateMachine.Update();
+		SetAbilities();
 	}
 	protected virtual void Update()
 	{

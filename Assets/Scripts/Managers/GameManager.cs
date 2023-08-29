@@ -1,22 +1,12 @@
 using UnityEngine;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : MonoBehaviour
 {
-	// Start is called before the first frame update
 	public PlayerManager playerManager;
+	public ViewManager viewManager;
 	public enum State
 	{
 		Watch,
 		Play
-	}
-	void Start()
-	{
-
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
 	}
 }
