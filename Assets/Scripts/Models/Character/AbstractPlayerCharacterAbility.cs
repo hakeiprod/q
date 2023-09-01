@@ -51,6 +51,8 @@ public abstract partial class AbstractPlayerCharacter
 				{
 					state = State.Unusable;
 					OnEnd();
+					Observable.Timer(TimeSpan.FromSeconds(effectTime))
+					.Subscribe(_ => state = State.Usable);
 				});
 		}
 	}
