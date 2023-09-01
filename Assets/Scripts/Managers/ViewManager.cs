@@ -38,7 +38,6 @@ public class ViewManager : MonoBehaviour
 		activePlayer.ObserveEveryValueChanged(x => x.currentStatus).Subscribe(
 			(x) =>
 			{
-				Debug.Log("aaaaa");
 				health.highValue = x.maxHealth;
 				health.lowValue = x.health;
 			}

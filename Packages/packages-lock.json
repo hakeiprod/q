@@ -1,22 +1,5 @@
 {
   "dependencies": {
-    "com.reactunity.core": {
-      "version": "0.15.4",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.editorcoroutines": "1.0.0",
-        "com.unity.nuget.newtonsoft-json": "3.0.2"
-      },
-      "url": "https://package.openupm.com"
-    },
-    "com.reactunity.quickjs": {
-      "version": "0.15.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://package.openupm.com"
-    },
     "com.unity.burst": {
       "version": "1.6.6",
       "depth": 1,
@@ -115,7 +98,7 @@
     },
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.0.2",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

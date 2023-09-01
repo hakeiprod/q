@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "com.reactunity.core": "0.15.4",
-    "com.reactunity.quickjs": "0.15.0",
     "com.unity.cinemachine": "2.9.7",
     "com.unity.collab-proxy": "1.15.18",
     "com.unity.feature.development": "1.0.1",
