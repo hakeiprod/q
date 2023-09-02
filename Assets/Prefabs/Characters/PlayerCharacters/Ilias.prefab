@@ -1112,7 +1112,8 @@ MonoBehaviour:
   animator: {fileID: 6982812146204527121}
   characterController: {fileID: 4416926081852918491}
   defaultStatus:
-    health: 30
+    health:
+      value: 30
     maxHealth: 100
     stamina: 0
     walk:
@@ -1144,7 +1145,8 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   firstSkillStatus:
-    health: 100
+    health:
+      value: 0
     maxHealth: 100
     stamina: 0
     walk:

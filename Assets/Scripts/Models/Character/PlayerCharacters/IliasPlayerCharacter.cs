@@ -8,12 +8,11 @@ public class IliasPlayerCharacter : AbstractPlayerCharacter
 		ability.Duration(
 			() =>
 			{
-				currentStatus = firstSkillStatus;
+				currentStatus.Value = firstSkillStatus;
 			},
 			() =>
 			{
-				currentStatus = defaultStatus;
-				ability.state = Ability.State.Unusable;
+				currentStatus.Value = defaultStatus;
 			});
 	}
 }

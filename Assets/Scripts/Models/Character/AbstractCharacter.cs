@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public abstract partial class AbstractCharacter : MonoBehaviour
@@ -6,7 +7,7 @@ public abstract partial class AbstractCharacter : MonoBehaviour
 	public Animator animator;
 	public CharacterController characterController;
 	[SerializeField] public Status defaultStatus;
-	[System.NonSerialized] public Status currentStatus;
+	[System.NonSerialized] public ReactiveProperty<Status> currentStatus;
 	public Dictionary<string, int> state = new()
 	{
 		{ "idle", 0 },
@@ -22,6 +23,6 @@ public abstract partial class AbstractCharacter : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		currentStatus = defaultStatus;
+		currentStatus.Value = defaultStatus;
 	}
 }

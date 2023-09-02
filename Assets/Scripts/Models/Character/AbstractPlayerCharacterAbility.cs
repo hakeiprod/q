@@ -29,7 +29,7 @@ public abstract partial class AbstractPlayerCharacter
 		[SerializeField] public float coolTime;
 		[SerializeField] public float effectTime;
 		[SerializeField] public UnityEvent<Ability> Event;
-		[NonSerialized] public State state = State.Usable;
+		[NonSerialized] public ReactiveProperty<State> state = new(State.Usable);
 		public void Setup(PlayerInputAction playerInputAction, Func<PlayerInputAction, bool> func)
 		{
 			playerInputAction
@@ -45,14 +45,14 @@ public abstract partial class AbstractPlayerCharacter
 		public void Duration(Action OnStart, Action OnEnd)
 		{
 			OnStart();
-			state = State.Using;
+			state.Value = State.Using;
 			Observable.Timer(TimeSpan.FromSeconds(effectTime))
 				.Subscribe(_ =>
 				{
-					state = State.Unusable;
+					state.Value = State.Unusable;
 					OnEnd();
 					Observable.Timer(TimeSpan.FromSeconds(effectTime))
-					.Subscribe(_ => state = State.Usable);
+					.Subscribe(_ => state.Value = State.Usable);
 				});
 		}
 	}

@@ -39,7 +39,7 @@ public abstract partial class AbstractPlayerCharacter
 	{
 		protected override void Update()
 		{
-			Context.Move(Context.currentStatus.walk.speed, -Context.currentStatus.fall.speed);
+			Context.Move(Context.currentStatus.Value.walk.speed, -Context.currentStatus.Value.fall.speed);
 			if (!Context.characterController.isGrounded) Context.stateMachine.SendEvent(Context.state["fall"]);
 			if (Context.GetCurrentAnimatorClip() != "Walk_N") return;
 			if (Context.IsJampable()) Context.stateMachine.SendEvent(Context.state["jump"]);
@@ -55,22 +55,22 @@ public abstract partial class AbstractPlayerCharacter
 			if (Context.IsJampable()) Context.stateMachine.SendEvent(Context.state["jump"]);
 			if (Context.IsIdling()) Context.stateMachine.SendEvent(Context.state["idle"]);
 			if (!Context.playerInputAction.run) Context.stateMachine.SendEvent(Context.state["walk"]);
-			Context.Move(Context.currentStatus.run.speed, -Context.currentStatus.fall.speed);
+			Context.Move(Context.currentStatus.Value.run.speed, -Context.currentStatus.Value.fall.speed);
 		}
 	}
 	public class PlayerJumpState<T> : JumpState<T> where T : AbstractPlayerCharacter
 	{
 		protected override void Update()
 		{
-			if (Context.transform.position.y > Context.currentStatus.jump.height) Context.stateMachine.SendEvent(Context.state["fall"]);
-			Context.Move(Context.currentStatus.walk.speed, Context.currentStatus.jump.speed);
+			if (Context.transform.position.y > Context.currentStatus.Value.jump.height) Context.stateMachine.SendEvent(Context.state["fall"]);
+			Context.Move(Context.currentStatus.Value.walk.speed, Context.currentStatus.Value.jump.speed);
 		}
 	}
 	public class PlayerFallState<T> : FallState<T> where T : AbstractPlayerCharacter
 	{
 		protected override void Update()
 		{
-			Context.Move(Context.currentStatus.walk.speed, -Context.currentStatus.fall.speed);
+			Context.Move(Context.currentStatus.Value.walk.speed, -Context.currentStatus.Value.fall.speed);
 			if (Context.GetCurrentAnimatorClip() != "InAir") return;
 			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent(Context.state["land"]);
 		}

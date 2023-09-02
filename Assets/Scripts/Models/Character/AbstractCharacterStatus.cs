@@ -1,3 +1,4 @@
+using UniRx;
 using UnityEngine;
 
 public abstract partial class AbstractCharacter
@@ -5,7 +6,7 @@ public abstract partial class AbstractCharacter
 	[System.Serializable]
 	public class Status
 	{
-		public int health;
+		public ReactiveProperty<int> health = new();
 		public int maxHealth;
 		public int stamina;
 		[SerializeField] public Action walk;

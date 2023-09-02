@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerManager: {fileID: 2232278700480072559}
-  viewManager: {fileID: 0}
+  viewManager: {fileID: 2641264358110398198}
 --- !u!1 &7370029699842096350
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,6 +530,8 @@ MonoBehaviour:
   - {fileID: 7678748937449944763, guid: 1389146046c514c4d8b2e4d7676b18b4, type: 3}
   - {fileID: 3388030272338332722, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
   - {fileID: 3388030272338332722, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+  activePlayer:
+    value: {fileID: 0}
 --- !u!114 &1296914547698413151
 MonoBehaviour:
   m_ObjectHideFlags: 0
