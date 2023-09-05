@@ -7,7 +7,7 @@ public abstract partial class AbstractCharacter : MonoBehaviour
 	public Animator animator;
 	public CharacterController characterController;
 	[SerializeField] public Status defaultStatus;
-	[System.NonSerialized] public ReactiveProperty<Status> currentStatus;
+	[System.NonSerialized] public ReactiveProperty<Status> currentStatus = new();
 	public Dictionary<string, int> state = new()
 	{
 		{ "idle", 0 },
@@ -20,7 +20,6 @@ public abstract partial class AbstractCharacter : MonoBehaviour
 		{ "injure", 7 },
 		{ "die", 8 },
 	};
-
 	protected virtual void Awake()
 	{
 		currentStatus.Value = defaultStatus;

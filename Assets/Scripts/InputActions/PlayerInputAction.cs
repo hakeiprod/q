@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,6 +30,7 @@ public class PlayerInputAction : MonoBehaviour
 		var index = (int)context.ReadValue<float>();
 		if (index > 0) playerManager.ChangeActivePlayer(index - 1);
 	}
+
 	public void OnFirstSkill(InputAction.CallbackContext context)
 	{
 		ability0 = context.performed;

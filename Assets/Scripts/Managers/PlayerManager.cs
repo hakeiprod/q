@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cinemachine;
 using UniRx;
@@ -10,25 +11,24 @@ public class PlayerManager : MonoBehaviour
 	public CinemachineFreeLook cinemachineFreeLook;
 	public List<AbstractPlayerCharacter> players = new List<AbstractPlayerCharacter>();
 	readonly List<AbstractPlayerCharacter> playerInstances = new List<AbstractPlayerCharacter>();
-	[System.NonSerialized] int activePlayerIndex = 0;
-	public ReactiveProperty<AbstractPlayerCharacter> activePlayer = new();
+	[NonSerialized] int activePlayerIndex = 0;
+	[NonSerialized] public ReactiveProperty<AbstractPlayerCharacter> activePlayer = new();
 	protected void Awake()
 	{
 		InstantiatePlayers();
-		activePlayer.Value = playerInstances[activePlayerIndex];
 		ChangeActivePlayer(activePlayerIndex);
+		activePlayer.Pairwise().Subscribe(p => InheritPlayerTransform(p.Previous, p.Current));
 	}
 	public void ChangeActivePlayer(int index)
 	{
-		InheritPlayerTransform(activePlayer.Value, SetActivePlayerInstance(index));
+		SetActivePlayerInstance(index);
 		FollowedCamera();
 	}
 	AbstractPlayerCharacter SetActivePlayerInstance(int index)
 	{
-		activePlayerIndex = index;
-		activePlayer.Value = playerInstances[activePlayerIndex];
 		playerInstances.ForEach(p => p.gameObject.SetActive(false));
-		playerInstances[index].gameObject.SetActive(true);
+		activePlayer.Value = playerInstances[index];
+		activePlayer.Value.gameObject.SetActive(true);
 		return activePlayer.Value;
 	}
 	void InheritPlayerTransform(AbstractPlayerCharacter prevActivePlayer, AbstractPlayerCharacter nextActivePlayer)

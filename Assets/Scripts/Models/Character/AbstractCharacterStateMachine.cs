@@ -17,7 +17,6 @@ public abstract partial class AbstractCharacter
 	{
 		protected override void Enter()
 		{
-
 			Context.animator.SetBool("Walk", true);
 		}
 		protected override void Exit()
