@@ -21,14 +21,14 @@ public class ViewManager : MonoBehaviour
 				{
 					switch (x)
 					{
-						case AbstractPlayerCharacter.Ability.State.Usable:
+						case Ability.State.Usable:
 							ability.visible = true;
 							ability.value = false;
 							break;
-						case AbstractPlayerCharacter.Ability.State.Using:
+						case Ability.State.Using:
 							ability.value = true;
 							break;
-						case AbstractPlayerCharacter.Ability.State.Unusable:
+						case Ability.State.Unusable:
 							ability.value = false;
 							ability.visible = false;
 							break;
@@ -36,11 +36,11 @@ public class ViewManager : MonoBehaviour
 				});
 
 				// health bar
-				x.currentStatus.Subscribe(x =>
-				{
-					health.highValue = x.maxHealth;
-					x.health.Subscribe(x => health.lowValue = x);
-				});
+				// x.currentStatus.Subscribe(x =>
+				// {
+				// 	health.highValue = x.maxHealth;
+				// 	x.health.Subscribe(x => health.lowValue = x);
+				// });
 			});
 
 	}

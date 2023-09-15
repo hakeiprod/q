@@ -1,8 +1,11 @@
 using IceMilkTea.Core;
-
-public abstract partial class AbstractCharacter
+using UnityEngine;
+using System.Collections.Generic;
+public interface ICharacter<T> where T : AbstractCharacter
 {
-	public class IdleState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	public Dictionary<string, int> state { get; set; }
+	public ImtStateMachine<T> stateMachine { get; set; }
+	public class IdleState : ImtStateMachine<T>.State
 	{
 		protected override void Enter()
 		{
@@ -13,7 +16,7 @@ public abstract partial class AbstractCharacter
 			Context.animator.SetBool("Idle", false);
 		}
 	}
-	public class WalkState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	public class WalkState : ImtStateMachine<T>.State
 	{
 		protected override void Enter()
 		{
@@ -24,7 +27,7 @@ public abstract partial class AbstractCharacter
 			Context.animator.SetBool("Walk", false);
 		}
 	}
-	public class RunState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	public class RunState : ImtStateMachine<T>.State
 	{
 		protected override void Enter()
 		{
@@ -35,7 +38,7 @@ public abstract partial class AbstractCharacter
 			Context.animator.SetBool("Run", false);
 		}
 	}
-	public class JumpState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	public class JumpState : ImtStateMachine<T>.State
 	{
 		protected override void Enter()
 		{
@@ -46,7 +49,7 @@ public abstract partial class AbstractCharacter
 			Context.animator.SetBool("Jump", false);
 		}
 	}
-	public class FallState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	public class FallState : ImtStateMachine<T>.State
 	{
 		protected override void Enter()
 		{
@@ -57,7 +60,7 @@ public abstract partial class AbstractCharacter
 			Context.animator.SetBool("Fall", false);
 		}
 	}
-	public class LandState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	public class LandState : ImtStateMachine<T>.State
 	{
 		protected override void Enter()
 		{

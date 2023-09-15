@@ -1,14 +1,14 @@
 using System.Collections.Generic;
+using IceMilkTea.Core;
 using UniRx;
 using UnityEngine;
 
-public abstract partial class AbstractCharacter : MonoBehaviour
+public abstract partial class AbstractCharacter : MonoBehaviour, ICharacter<AbstractCharacter>
 {
+	public ImtStateMachine<AbstractCharacter> stateMachine { get; set; }
 	public Animator animator;
 	public CharacterController characterController;
-	[SerializeField] public Status defaultStatus;
-	[System.NonSerialized] public ReactiveProperty<Status> currentStatus = new();
-	public Dictionary<string, int> state = new()
+	public Dictionary<string, int> state { get; set; } = new()
 	{
 		{ "idle", 0 },
 		{ "walk", 1 },
@@ -20,8 +20,13 @@ public abstract partial class AbstractCharacter : MonoBehaviour
 		{ "injure", 7 },
 		{ "die", 8 },
 	};
+	[SerializeField] public Status defaultStatus;
+	public ReactiveProperty<Status> currentStatus = new();
+
 	protected virtual void Awake()
 	{
 		currentStatus.Value = defaultStatus;
 	}
 }
+
+
