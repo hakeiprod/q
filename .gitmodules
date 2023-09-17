@@ -1,0 +1,3 @@
+[submodule "IceMilkTea"]
+	path = IceMilkTea
+	url = https://github.com/Sinoa/IceMilkTea.git
