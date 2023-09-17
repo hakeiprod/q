@@ -5,9 +5,8 @@ using UniRx.Triggers;
 using UnityEngine;
 using IceMilkTea.Core;
 
-public abstract partial class AbstractPlayerCharacter : AbstractCharacter, IPlayerCharacter<AbstractPlayerCharacter>
+public abstract class AbstractPlayerCharacter : AbstractCharacter
 {
-	public ImtStateMachine<AbstractPlayerCharacter> stateMachine { get; set; }
 	public List<PlayerCharacterAbility> abilities;
 	public PlayerInputAction playerInputAction;
 	[NonSerialized] public ObservableStateMachineTrigger observableStateMachineTrigger;
@@ -16,24 +15,16 @@ public abstract partial class AbstractPlayerCharacter : AbstractCharacter, IPlay
 	protected override void Awake()
 	{
 		base.Awake();
-		stateMachine = new ImtStateMachine<AbstractPlayerCharacter>(this);
 		observableStateMachineTrigger = animator.GetBehaviour<ObservableStateMachineTrigger>();
-		SetStateMachine();
 	}
 	protected virtual void Start()
 	{
 		SetAbilities();
-		stateMachine.Update();
-	}
-	protected virtual void Update()
-	{
-		stateMachine.Update();
 	}
 	public string GetCurrentAnimatorClip()
 	{
 		return animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
 	}
-
 	public void OnStateExitAsObservableByName(string stateInfoName, Action<ObservableStateMachineTrigger.OnStateInfo> Subscribe)
 	{
 		observableStateMachineTrigger.OnStateExitAsObservable().Where(x => x.StateInfo.IsName(stateInfoName)).Subscribe(Subscribe).AddTo(this);
@@ -68,27 +59,41 @@ public abstract partial class AbstractPlayerCharacter : AbstractCharacter, IPlay
 		// abilities[1].Setup(playerInputAction, (x) => x.ability1);
 		// abilities[2].Setup(playerInputAction, (x) => x.ability2);
 	}
-	public void SetStateMachine()
+}
+public abstract class AbstractPlayerCharacter<T> : AbstractPlayerCharacter, IPlayerCharacter<T> where T : AbstractPlayerCharacter<T>
+{
+	public ImtStateMachine<T> stateMachine { get; set; }
+	protected override void Start()
 	{
-		stateMachine.SetStartState<IPlayerCharacter<AbstractPlayerCharacter>.PlayerIdleState>();
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerIdleState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerWalkState>(state["walk"]);
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerIdleState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerJumpState>(state["jump"]);
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerIdleState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerFallState>(state["fall"]);
+		stateMachine.Update();
+	}
+	protected virtual void Update()
+	{
+		stateMachine.Update();
+	}
+	protected virtual ImtStateMachine<T> SetStateMachine(T character)
+	{
+		var stateMachine = new ImtStateMachine<T>(character);
+		stateMachine.SetStartState<IPlayerCharacter<T>.PlayerIdleState>();
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerIdleState, IPlayerCharacter<T>.PlayerWalkState>(state["walk"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerIdleState, IPlayerCharacter<T>.PlayerJumpState>(state["jump"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerIdleState, IPlayerCharacter<T>.PlayerFallState>(state["fall"]);
 
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerWalkState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerIdleState>(state["idle"]);
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerWalkState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerJumpState>(state["jump"]);
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerWalkState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerRunState>(state["run"]);
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerWalkState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerFallState>(state["fall"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerWalkState, IPlayerCharacter<T>.PlayerIdleState>(state["idle"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerWalkState, IPlayerCharacter<T>.PlayerJumpState>(state["jump"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerWalkState, IPlayerCharacter<T>.PlayerRunState>(state["run"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerWalkState, IPlayerCharacter<T>.PlayerFallState>(state["fall"]);
 
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerRunState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerWalkState>(state["walk"]);
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerRunState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerJumpState>(state["jump"]);
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerRunState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerFallState>(state["fall"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerRunState, IPlayerCharacter<T>.PlayerWalkState>(state["walk"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerRunState, IPlayerCharacter<T>.PlayerJumpState>(state["jump"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerRunState, IPlayerCharacter<T>.PlayerFallState>(state["fall"]);
 
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerJumpState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerFallState>(state["fall"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerJumpState, IPlayerCharacter<T>.PlayerFallState>(state["fall"]);
 
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerFallState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerLandState>(state["land"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerFallState, IPlayerCharacter<T>.PlayerLandState>(state["land"]);
 
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerLandState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerIdleState>(state["idle"]);
-		stateMachine.AddTransition<IPlayerCharacter<AbstractPlayerCharacter>.PlayerLandState, IPlayerCharacter<AbstractPlayerCharacter>.PlayerWalkState>(state["walk"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerLandState, IPlayerCharacter<T>.PlayerIdleState>(state["idle"]);
+		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerLandState, IPlayerCharacter<T>.PlayerWalkState>(state["walk"]);
+		return stateMachine;
 	}
 }

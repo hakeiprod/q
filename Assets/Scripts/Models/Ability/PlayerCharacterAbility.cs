@@ -10,7 +10,7 @@ public class PlayerCharacterAbility : Ability
 	[SerializeField] public Type type;
 	[SerializeField] public float coolTime;
 	[SerializeField] public float effectTime;
-	[SerializeField] public UnityEvent<Ability> Event;
+	[SerializeField] public UnityEvent<PlayerCharacterAbility> Event;
 	public void Setup(PlayerInputAction playerInputAction, Func<PlayerInputAction, bool> func)
 	{
 		playerInputAction

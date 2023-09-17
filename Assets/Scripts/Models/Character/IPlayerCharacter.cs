@@ -1,4 +1,5 @@
-public interface IPlayerCharacter<T> : ICharacter<T> where T : AbstractPlayerCharacter
+using UnityEngine;
+public interface IPlayerCharacter<T> : ICharacter<T> where T : AbstractPlayerCharacter<T>
 {
 	public class PlayerIdleState : IdleState
 	{

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public interface ICharacter<T> where T : AbstractCharacter
 {
 	public Dictionary<string, int> state { get; set; }
-	public ImtStateMachine<T> stateMachine { get; set; }
 	public class IdleState : ImtStateMachine<T>.State
 	{
 		protected override void Enter()

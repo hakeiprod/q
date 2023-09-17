@@ -1125,6 +1125,21 @@ MonoBehaviour:
       height: 2
     fall:
       speed: 8
+  currentStatus:
+    value:
+      health:
+        value: 0
+      maxHealth: 0
+      stamina: 0
+      walk:
+        speed: 0
+      run:
+        speed: 0
+      jump:
+        speed: 0
+        height: 0
+      fall:
+        speed: 0
   abilities:
   - type: 0
     coolTime: 5
@@ -1144,6 +1159,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  playerInputAction: {fileID: 0}
   firstSkillStatus:
     health:
       value: 0

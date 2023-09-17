@@ -5,7 +5,6 @@ using UnityEngine;
 
 public abstract partial class AbstractCharacter : MonoBehaviour, ICharacter<AbstractCharacter>
 {
-	public ImtStateMachine<AbstractCharacter> stateMachine { get; set; }
 	public Animator animator;
 	public CharacterController characterController;
 	public Dictionary<string, int> state { get; set; } = new()
@@ -22,11 +21,8 @@ public abstract partial class AbstractCharacter : MonoBehaviour, ICharacter<Abst
 	};
 	[SerializeField] public Status defaultStatus;
 	public ReactiveProperty<Status> currentStatus = new();
-
 	protected virtual void Awake()
 	{
 		currentStatus.Value = defaultStatus;
 	}
 }
-
-
