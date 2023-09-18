@@ -20,5 +20,4 @@ public class IliasPlayerCharacter : AbstractPlayerCharacter<IliasPlayerCharacter
 			() => currentStatus.Value = defaultStatus
 		);
 	}
-	
 }

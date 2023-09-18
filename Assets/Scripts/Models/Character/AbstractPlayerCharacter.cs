@@ -60,7 +60,7 @@ public abstract class AbstractPlayerCharacter : AbstractCharacter
 		// abilities[2].Setup(playerInputAction, (x) => x.ability2);
 	}
 }
-public abstract class AbstractPlayerCharacter<T> : AbstractPlayerCharacter, IPlayerCharacter<T> where T : AbstractPlayerCharacter<T>
+public abstract class AbstractPlayerCharacter<T> : AbstractPlayerCharacter where T : AbstractPlayerCharacter<T>
 {
 	public ImtStateMachine<T> stateMachine { get; set; }
 	protected override void Start()
@@ -74,26 +74,83 @@ public abstract class AbstractPlayerCharacter<T> : AbstractPlayerCharacter, IPla
 	protected virtual ImtStateMachine<T> SetStateMachine(T character)
 	{
 		var stateMachine = new ImtStateMachine<T>(character);
-		stateMachine.SetStartState<IPlayerCharacter<T>.PlayerIdleState>();
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerIdleState, IPlayerCharacter<T>.PlayerWalkState>(state["walk"]);
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerIdleState, IPlayerCharacter<T>.PlayerJumpState>(state["jump"]);
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerIdleState, IPlayerCharacter<T>.PlayerFallState>(state["fall"]);
+		stateMachine.SetStartState<PlayerIdleState>();
+		stateMachine.AddTransition<PlayerIdleState, PlayerWalkState>(state["walk"]);
+		stateMachine.AddTransition<PlayerIdleState, PlayerJumpState>(state["jump"]);
+		stateMachine.AddTransition<PlayerIdleState, PlayerFallState>(state["fall"]);
 
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerWalkState, IPlayerCharacter<T>.PlayerIdleState>(state["idle"]);
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerWalkState, IPlayerCharacter<T>.PlayerJumpState>(state["jump"]);
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerWalkState, IPlayerCharacter<T>.PlayerRunState>(state["run"]);
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerWalkState, IPlayerCharacter<T>.PlayerFallState>(state["fall"]);
+		stateMachine.AddTransition<PlayerWalkState, PlayerIdleState>(state["idle"]);
+		stateMachine.AddTransition<PlayerWalkState, PlayerJumpState>(state["jump"]);
+		stateMachine.AddTransition<PlayerWalkState, PlayerRunState>(state["run"]);
+		stateMachine.AddTransition<PlayerWalkState, PlayerFallState>(state["fall"]);
 
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerRunState, IPlayerCharacter<T>.PlayerWalkState>(state["walk"]);
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerRunState, IPlayerCharacter<T>.PlayerJumpState>(state["jump"]);
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerRunState, IPlayerCharacter<T>.PlayerFallState>(state["fall"]);
+		stateMachine.AddTransition<PlayerRunState, PlayerWalkState>(state["walk"]);
+		stateMachine.AddTransition<PlayerRunState, PlayerJumpState>(state["jump"]);
+		stateMachine.AddTransition<PlayerRunState, PlayerFallState>(state["fall"]);
 
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerJumpState, IPlayerCharacter<T>.PlayerFallState>(state["fall"]);
+		stateMachine.AddTransition<PlayerJumpState, PlayerFallState>(state["fall"]);
 
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerFallState, IPlayerCharacter<T>.PlayerLandState>(state["land"]);
+		stateMachine.AddTransition<PlayerFallState, PlayerLandState>(state["land"]);
 
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerLandState, IPlayerCharacter<T>.PlayerIdleState>(state["idle"]);
-		stateMachine.AddTransition<IPlayerCharacter<T>.PlayerLandState, IPlayerCharacter<T>.PlayerWalkState>(state["walk"]);
+		stateMachine.AddTransition<PlayerLandState, PlayerIdleState>(state["idle"]);
+		stateMachine.AddTransition<PlayerLandState, PlayerWalkState>(state["walk"]);
 		return stateMachine;
+	}
+	public class PlayerIdleState : IdleState<T>
+	{
+		protected override void Update()
+		{
+			if (!Context.characterController.isGrounded) Context.stateMachine.SendEvent(Context.state["fall"]);
+			if (!Context.IsIdling()) Context.stateMachine.SendEvent(Context.state["walk"]);
+			if (Context.IsJampable()) Context.stateMachine.SendEvent(Context.state["jump"]);
+		}
+	}
+	public class PlayerWalkState : WalkState<T>
+	{
+		protected override void Update()
+		{
+			Context.Move(Context.currentStatus.Value.walk.speed, -Context.currentStatus.Value.fall.speed);
+			if (!Context.characterController.isGrounded) Context.stateMachine.SendEvent(Context.state["fall"]);
+			if (Context.GetCurrentAnimatorClip() != "Walk_N") return;
+			if (Context.IsJampable()) Context.stateMachine.SendEvent(Context.state["jump"]);
+			if (Context.IsIdling()) Context.stateMachine.SendEvent(Context.state["idle"]);
+			if (Context.playerInputAction.run) Context.stateMachine.SendEvent(Context.state["run"]);
+		}
+	}
+	public class PlayerRunState : RunState<T>
+	{
+		protected override void Update()
+		{
+			if (!Context.characterController.isGrounded) Context.stateMachine.SendEvent(Context.state["fall"]);
+			if (Context.IsJampable()) Context.stateMachine.SendEvent(Context.state["jump"]);
+			if (Context.IsIdling()) Context.stateMachine.SendEvent(Context.state["idle"]);
+			if (!Context.playerInputAction.run) Context.stateMachine.SendEvent(Context.state["walk"]);
+			Context.Move(Context.currentStatus.Value.run.speed, -Context.currentStatus.Value.fall.speed);
+		}
+	}
+	public class PlayerJumpState : JumpState<T>
+	{
+		protected override void Update()
+		{
+			if (Context.transform.position.y > Context.currentStatus.Value.jump.height) Context.stateMachine.SendEvent(Context.state["fall"]);
+			Context.Move(Context.currentStatus.Value.walk.speed, Context.currentStatus.Value.jump.speed);
+		}
+	}
+	public class PlayerFallState : FallState<T>
+	{
+		protected override void Update()
+		{
+			Context.Move(Context.currentStatus.Value.walk.speed, -Context.currentStatus.Value.fall.speed);
+			if (Context.GetCurrentAnimatorClip() != "InAir") return;
+			if (Context.characterController.isGrounded) Context.stateMachine.SendEvent(Context.state["land"]);
+		}
+	}
+	public class PlayerLandState : LandState<T>
+	{
+		protected override void Update()
+		{
+			if (Context.GetCurrentAnimatorClip() != "JumpLand") return;
+			if (Context.animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1) Context.stateMachine.SendEvent(Context.state["idle"]);
+		}
 	}
 }

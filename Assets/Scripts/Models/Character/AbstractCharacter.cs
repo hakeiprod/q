@@ -3,7 +3,7 @@ using IceMilkTea.Core;
 using UniRx;
 using UnityEngine;
 
-public abstract partial class AbstractCharacter : MonoBehaviour, ICharacter<AbstractCharacter>
+public abstract partial class AbstractCharacter : MonoBehaviour
 {
 	public Animator animator;
 	public CharacterController characterController;
@@ -24,5 +24,71 @@ public abstract partial class AbstractCharacter : MonoBehaviour, ICharacter<Abst
 	protected virtual void Awake()
 	{
 		currentStatus.Value = defaultStatus;
+	}
+	public class IdleState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	{
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Idle", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Idle", false);
+		}
+	}
+	public class WalkState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	{
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Walk", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Walk", false);
+		}
+	}
+	public class RunState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	{
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Run", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Run", false);
+		}
+	}
+	public class JumpState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	{
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Jump", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Jump", false);
+		}
+	}
+	public class FallState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	{
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Fall", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Fall", false);
+		}
+	}
+	public class LandState<T> : ImtStateMachine<T>.State where T : AbstractCharacter
+	{
+		protected override void Enter()
+		{
+			Context.animator.SetBool("Land", true);
+		}
+		protected override void Exit()
+		{
+			Context.animator.SetBool("Land", false);
+		}
 	}
 }
