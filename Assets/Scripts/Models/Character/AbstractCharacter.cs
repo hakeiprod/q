@@ -7,7 +7,7 @@ public abstract partial class AbstractCharacter : MonoBehaviour
 {
 	public Animator animator;
 	public CharacterController characterController;
-	public Dictionary<string, int> state { get; set; } = new()
+	public Dictionary<string, int> state = new()
 	{
 		{ "idle", 0 },
 		{ "walk", 1 },

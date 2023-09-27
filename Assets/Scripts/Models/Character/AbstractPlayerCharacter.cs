@@ -12,26 +12,14 @@ public abstract class AbstractPlayerCharacter : AbstractCharacter
 	[NonSerialized] public ObservableStateMachineTrigger observableStateMachineTrigger;
 	[NonSerialized] float RotationSmoothTime = 0.12f;
 	float _rotationVelocity;
-	protected override void Awake()
-	{
-		base.Awake();
-		observableStateMachineTrigger = animator.GetBehaviour<ObservableStateMachineTrigger>();
-	}
 	protected virtual void Start()
 	{
 		SetAbilities();
+		observableStateMachineTrigger = animator.GetBehaviour<ObservableStateMachineTrigger>();
 	}
 	public string GetCurrentAnimatorClip()
 	{
 		return animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-	}
-	public void OnStateExitAsObservableByName(string stateInfoName, Action<ObservableStateMachineTrigger.OnStateInfo> Subscribe)
-	{
-		observableStateMachineTrigger.OnStateExitAsObservable().Where(x => x.StateInfo.IsName(stateInfoName)).Subscribe(Subscribe).AddTo(this);
-	}
-	public void OnStateEnterAsObservableByName(string stateInfoName, Action<ObservableStateMachineTrigger.OnStateInfo> Subscribe)
-	{
-		observableStateMachineTrigger.OnStateEnterAsObservable().Where(x => x.StateInfo.IsName(stateInfoName)).Subscribe(Subscribe).AddTo(this);
 	}
 	public bool IsIdling() { return playerInputAction.move == Vector2.zero; }
 	public bool IsJampable() { return playerInputAction.jump && characterController.isGrounded; }
@@ -62,13 +50,19 @@ public abstract class AbstractPlayerCharacter : AbstractCharacter
 }
 public abstract class AbstractPlayerCharacter<T> : AbstractPlayerCharacter where T : AbstractPlayerCharacter<T>
 {
-	public ImtStateMachine<T> stateMachine { get; set; }
+	public ImtStateMachine<T> stateMachine;
+	protected override void Awake()
+	{
+		base.Awake();
+	}
 	protected override void Start()
 	{
+		base.Start();
 		stateMachine.Update();
 	}
 	protected virtual void Update()
 	{
+		Debug.Log(stateMachine.CurrentStateName);
 		stateMachine.Update();
 	}
 	protected virtual ImtStateMachine<T> SetStateMachine(T character)

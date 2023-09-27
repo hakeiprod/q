@@ -1802,6 +1802,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManger
       objectReference: {fileID: 0}
+    - target: {fileID: 5525659130023746740, guid: 0b4972b5382fdda458095451510d68cc,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525659130023746740, guid: 0b4972b5382fdda458095451510d68cc,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525659130023746740, guid: 0b4972b5382fdda458095451510d68cc,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8952419510767248669}
+    - target: {fileID: 5525659130023746740, guid: 0b4972b5382fdda458095451510d68cc,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525659130023746740, guid: 0b4972b5382fdda458095451510d68cc,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnFire
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525659130023746740, guid: 0b4972b5382fdda458095451510d68cc,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerInputAction, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525659130023746740, guid: 0b4972b5382fdda458095451510d68cc,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6681416078434367951, guid: 0b4972b5382fdda458095451510d68cc,
         type: 3}
       propertyPath: viewManager
@@ -1809,3 +1844,15 @@ PrefabInstance:
       objectReference: {fileID: 1792492867}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b4972b5382fdda458095451510d68cc, type: 3}
+--- !u!114 &8952419510767248669 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1296914547698413151, guid: 0b4972b5382fdda458095451510d68cc,
+    type: 3}
+  m_PrefabInstance: {fileID: 8952419510767248668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d61155f433727541b4e4571b3ba68e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
